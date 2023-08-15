@@ -2,5 +2,5 @@
  
 Sensores utilizados até o momento:
 
-DHT11
+DHT11 | 
 Sensor de umidade de solo
