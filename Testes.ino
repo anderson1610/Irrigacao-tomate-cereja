@@ -53,7 +53,7 @@ void verificarUmidade(){
 
 void verificarTemperatura(){
 
-      //Germinação da semente  
+  //Germinação da semente  
   if (DHT.temperature >= 15 and DHT.temperature <= 25 ) {
   Serial.print("Temperatura OK para germinação")
   } else {
