@@ -5,7 +5,7 @@ const int pinoNivelAgua = 6; //Define sensor como pino 6
 const int pinoSensorUmidadeSolo = A1; //Pino sensor ligado a porta A1
 const int pinoDHT11 = A0; //Pino sinal do sensor ligado a porta A0
 dht DHT; //Variável para fazer referencia a biblioteca DHT
-int soloSECO = 900 //A verificar
+int soloSECO = 900 //A verificar, medida do solo seco
 
 
 void setup() {
