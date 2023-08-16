@@ -32,6 +32,13 @@ void loop() {
   int estadoNivelAgua = digitalRead(sensor); // define que estado esta a boia 0 ou 1
   Serial.print("Estado sensor : "); //Printa Estado sensor
   Serial.println(estadoNivelAgua); //Printa a leitura de estado
+
+  if (estadoNivelAgua == 1) {
+  //digitalWrite(pinoSolenoide, true)
+  } else {
+  //digitalWrite(pinoSolenoide, false)
+  }
+
   
   verificarUmidade()
   verificarTemperatura()
