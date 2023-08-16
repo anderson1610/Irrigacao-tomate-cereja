@@ -43,8 +43,10 @@ void verificarUmidade(){
 
   if (umidadeSolo >= soloSECO) {
   Serial.print("Solo seco VERIFICAR")
+  //Add ação
   } else {
   Serial.print("Umidade solo OK")
+  //Add ação
   }
 
   delay(64000)
@@ -58,6 +60,7 @@ void verificarTemperatura(){
   Serial.print("Temperatura OK para germinação")
   } else {
   Serial.print("Temperatura fora das recomendadas para germinação da semente")
+  //Add ação
   }
 
   //desenvolvimento e produção do tomate
@@ -65,6 +68,7 @@ void verificarTemperatura(){
   Serial.print("Temperatura OK para desenvolvimento e produção do tomate")
   } else {
   Serial.print("Temperatura fora das recomendadas para desenvolvimento e produção do tomate")
+  //Add ação
   }
   delay(64000)
 
