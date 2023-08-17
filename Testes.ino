@@ -49,7 +49,7 @@ void loop() {
 void solenoideStatus(int estadoNivelAgua, int pinoSolenoide){
 
   if (estadoNivelAgua == 1) {
-  digitalWrite(b, true);
+  digitalWrite(pinoSolenoide, true);
   Serial.println("| Solenoide ligada ");
   } else {
   digitalWrite(pinoSolenoide, false);
