@@ -5,6 +5,7 @@ const int pinoNivelAgua = 6; //Define sensor como pino 6
 const int pinoSensorUmidadeSolo = A1; //Pino sensor ligado a porta A1
 const int pinoDHT11 = A0; //Pino sinal do sensor ligado a porta A0
 dht DHT; //Variável para fazer referencia a biblioteca DHT
+
 int soloSECO = 900; //A verificar, medida do solo seco
 unsigned long ultimoTempoFuncao1 = 0;
 unsigned long ultimoTempoFuncao2 = 0;
@@ -45,19 +46,19 @@ void loop() {
 }
 
 
-void solenoideStatus(int a, int b){
+void solenoideStatus(int estadoNivelAgua, int pinoSolenoide){
 
-  if (a == 1) {
+  if (estadoNivelAgua == 1) {
   digitalWrite(b, true);
   Serial.println("| Solenoide ligada ");
   } else {
-  digitalWrite(b, false);
+  digitalWrite(pinoSolenoide, false);
   Serial.println("| Solenoide desligada ");
   }
 
 }
 
-void obterInfo(int a, int b){
+void obterInfo(int umidadeSolo, int estadoNivelAgua){
 
   DHT.read11(pinoDHT11); //Lê os valores do sensor
   Serial.print("| Umidade: "); //Imprime Umidade na porta serial
@@ -70,19 +71,19 @@ void obterInfo(int a, int b){
 
 
   Serial.print("| Umidade solo: ");
-  Serial.print(a);
+  Serial.print(umidadeSolo);
 
    // define que estado esta a boia 0 ou 1
   Serial.print(" | Estado sensor nivel de agua: "); //Printa Estado sensor
-  Serial.println(b); //Printa a leitura de estado
+  Serial.println(estadoNivelAgua); //Printa a leitura de estado
 
 }
 
 
 
-void verificarUmidade(int a){
+void verificarUmidade(int umidadeSolo){
 
-  if (a >= soloSECO) {
+  if (umidadeSolo >= soloSECO) {
   Serial.println("| Solo seco VERIFICAR");
   //Add ação
   } else {
