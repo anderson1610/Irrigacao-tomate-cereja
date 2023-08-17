@@ -9,7 +9,7 @@ dht DHT; //Variável para fazer referencia a biblioteca DHT
 int soloSECO = 900; //A verificar, medida do solo seco
 unsigned long ultimoTempoFuncao1 = 0;
 unsigned long ultimoTempoFuncao2 = 0;
-const unsigned long intervaloFuncao1 = 1000;  // 1 segundo
+const unsigned long intervaloFuncao1 = 500;  // 0,5 segundo
 const unsigned long intervaloFuncao2 = 60000; // 1 minuto
 
 
