@@ -92,8 +92,6 @@ void verificarUmidade(int umidadeSolo){
   //Add ação
   }
 
-  delay(1000);
-
 }
 
 //verifica a temperatura do ambiente
@@ -115,6 +113,5 @@ void verificarTemperatura(){
   Serial.println("| Temperatura fora das recomendadas para desenvolvimento e produção do tomate");
   //Add ação
   }
-  delay(1000);
 
 }
