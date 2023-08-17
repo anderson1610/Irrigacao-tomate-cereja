@@ -27,7 +27,7 @@ void loop() {
   int estadoNivelAgua = digitalRead(pinoNivelAgua);
   unsigned long tempoAtual = millis();
   
-  // Chama a primeira função a cada intervaloFuncao1
+  // Chama as funções a cada intervaloFuncao1
   if (tempoAtual - ultimoTempoFuncao1 >= intervaloFuncao1) {
 
     verificarTemperatura();
@@ -37,7 +37,7 @@ void loop() {
     ultimoTempoFuncao1 = tempoAtual;
   }
 
-  // Chama a segunda função a cada intervaloFuncao2
+  //Chama as funções a cada intervaloFuncao2
   if (tempoAtual - ultimoTempoFuncao2 >= intervaloFuncao2) {
     verificarUmidade(umidadeSolo);
     ultimoTempoFuncao2 = tempoAtual;
