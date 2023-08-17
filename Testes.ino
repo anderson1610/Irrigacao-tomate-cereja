@@ -45,7 +45,7 @@ void loop() {
 
 }
 
-
+//Obtem o estatus do nivel da agua e passa a informação para o rele, que ativa ou permanece com a solenoide desligada
 void solenoideStatus(int estadoNivelAgua, int pinoSolenoide){
 
   if (estadoNivelAgua == 1) {
@@ -58,6 +58,7 @@ void solenoideStatus(int estadoNivelAgua, int pinoSolenoide){
 
 }
 
+//coleta as informações de todos o sensores e printa no serial motor
 void obterInfo(int umidadeSolo, int estadoNivelAgua){
 
   DHT.read11(pinoDHT11); //Lê os valores do sensor
@@ -80,7 +81,7 @@ void obterInfo(int umidadeSolo, int estadoNivelAgua){
 }
 
 
-
+//Verifica a umidade do solo
 void verificarUmidade(int umidadeSolo){
 
   if (umidadeSolo >= soloSECO) {
@@ -95,6 +96,7 @@ void verificarUmidade(int umidadeSolo){
 
 }
 
+//verifica a temperatura do ambiente
 void verificarTemperatura(){
   //add condição para escolher geminação de semente ou desenvolvimento e produção do tomate
 
