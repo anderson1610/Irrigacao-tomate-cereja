@@ -45,7 +45,7 @@ void loop() {
 
 }
 
-//Obtem o estatus do nivel da agua e passa a informação para o rele, que ativa ou permanece com a solenoide desligada
+//Obtem o status do nivel da agua e passa a informação para o rele, que ativa ou permanece com a solenoide desligada
 void solenoideStatus(int estadoNivelAgua, int pinoSolenoide){
 
   if (estadoNivelAgua == 1) {
