@@ -96,16 +96,7 @@ void verificarUmidade(int umidadeSolo){
 
 //verifica a temperatura do ambiente
 void verificarTemperatura(){
-  //add condição para escolher geminação de semente ou desenvolvimento e produção do tomate
-
-  //Germinação da semente  
-  if ( DHT.temperature >= 15 && DHT.temperature <= 25 ) {
-  Serial.println("| Temperatura OK para germinação");
-  } else {
-  Serial.println("| Temperatura fora das recomendadas para germinação da semente");
-  //Add ação
-  }
-
+  
   //desenvolvimento e produção do tomate
   if (DHT.temperature >= 10 && DHT.temperature <= 34 ) {
   Serial.println("| Temperatura OK para desenvolvimento e produção do tomate");
