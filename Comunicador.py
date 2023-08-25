@@ -85,11 +85,11 @@ def backup():
 
         with open(backup, 'w', newline='') as csvfile:
             csvwriter = csv.writer(csvfile)
-            csvwriter.writerow(['Data', 'Temperatura', 'Umidade', 'Descrição'])  # Escreve o cabeçalho
+            csvwriter.writerow(['Data', 'Temperatura', 'Umidade', 'Descrição', 'hora'])  # Escreve o cabeçalho
 
             for row in result:
-                data, temperatura, umidade, descricao = row
-                csvwriter.writerow([data, temperatura, umidade, descricao])
+                data, temperatura, umidade, descricao, hora = row
+                csvwriter.writerow([data, temperatura, umidade, descricao, hora])
 
         print("Dados salvos no arquivo CSV")
 
