@@ -6,7 +6,7 @@ import csv
 import getpass
 from pathlib import Path
 import schedule
-import pytz
+import arrow
 
 data_atual = datetime.now() # Obtém a data atual
 data_string = data_atual.strftime('%d%m%Y') # Formata a data no padrão brasileiro (dd/mm/aaaa)
@@ -50,13 +50,13 @@ conn.commit()
 
 def hours():
     # Configura o fuso horário para Brasília
-    tz_brasil = pytz.timezone('America/Sao_Paulo')
+    tz_brasil = 'America/Sao_Paulo'
     
     # Obtém a hora atual com o fuso horário de Brasília
-    hora_atual_brasil = datetime.datetime.now(tz_brasil)
+    hora_atual_brasil = arrow.now(tz_brasil)
     
     # Formata a hora no padrão desejado (HH:MM)
-    hora_formatada = hora_atual_brasil.strftime('%H%M')
+    hora_formatada = hora_atual_brasil.format('HHmm')
     
     return hora_formatada
 
@@ -68,7 +68,7 @@ def get_username():
 def create_log_file():
     hours_current = hours()
     name_user = get_username()
-    log_file = f"C:\\Users\\{name_user}\\Desktop\\Backup\\{data_string}_dados_do_banco_{hours_current}.csv"
+    log_file = f"C:\\Users\\{name_user}\\Desktop\\Backup\\{data_string}_dados.csv"
     path = Path(f"C:\\Users\\{name_user}\\Desktop\\Backup")
     path.mkdir(parents=True, exist_ok=True)
     with open(log_file, 'a') as arquivo:
