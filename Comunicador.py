@@ -16,13 +16,13 @@ city_name = 'sao paulo' # Substitua 'YOUR_CITY_NAME' pelo nome da sua cidade
 
 # coletar informações no banco de dados
 get_query = '''
-    SELECT data, temperatura, umidade, descricao  
+    SELECT data, temperatura, umidade, descricao, hora  
     FROM previsao
 '''
 
 # Inserir informações no banco de dados
 insert_query = '''
-    INSERT INTO previsao (data, temperatura, umidade, descricao)
+    INSERT INTO previsao (data, temperatura, umidade, descricao, hora)
     VALUES (%s, %s, %s, %s)
 '''
 
@@ -42,7 +42,9 @@ cursor.execute('''
         data INT,      
         temperatura INT,
         umidade INT,
-        descricao TEXT
+        descricao TEXT,
+        hora INT
+               
     )
 ''')
 conn.commit()
@@ -98,13 +100,14 @@ def collect_data():
 
     response = requests.get(weather_url)
     data = response.json()
-
+    
     if response.status_code == 200:
         temperatura = data['main']['temp']
         umidade = data['main']['humidity']
         descricao = data['weather'][0]['description']
+        hours_current = hours()
 
-        values = (data_formatada, temperatura, umidade, descricao)
+        values = (data_formatada, temperatura, umidade, descricao, hours_current)
         cursor.execute(insert_query, values)
         conn.commit()
         print("Dados inseridos no banco de dados")
