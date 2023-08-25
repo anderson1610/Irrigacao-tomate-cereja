@@ -23,7 +23,7 @@ get_query = '''
 # Inserir informações no banco de dados
 insert_query = '''
     INSERT INTO previsao (data, temperatura, umidade, descricao, hora)
-    VALUES (%s, %s, %s, %s)
+    VALUES (%s, %s, %s, %s, %s)
 '''
 
 # Conectar ao banco de dados MySQL (db4free.net)
