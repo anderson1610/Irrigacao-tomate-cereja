@@ -58,7 +58,7 @@ def hours():
     hora_atual_brasil = arrow.now(tz_brasil)
     
     # Formata a hora no padrão desejado (HH:MM)
-    hora_formatada = hora_atual_brasil.format('HHmm')
+    hora_formatada =int(hora_atual_brasil.format('HHmm'))
     
     return hora_formatada
 
