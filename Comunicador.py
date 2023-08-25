@@ -68,7 +68,7 @@ def get_username():
 def create_log_file():
     hours_current = hours()
     name_user = get_username()
-    log_file = f"C:\\Users\\{name_user}\\Desktop\\Backup\\{data_string}_dados.csv"
+    log_file = f"C:\\Users\\{name_user}\\Desktop\\Backup\\{data_string}_Dados_Banco_Previsao_{hours_current}.csv"
     path = Path(f"C:\\Users\\{name_user}\\Desktop\\Backup")
     path.mkdir(parents=True, exist_ok=True)
     with open(log_file, 'a') as arquivo:
