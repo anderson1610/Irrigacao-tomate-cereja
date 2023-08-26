@@ -7,6 +7,10 @@ import getpass
 from pathlib import Path
 import schedule
 import arrow
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 
 data_atual = datetime.now() # Obtém a data atual
 data_string = data_atual.strftime('%d%m%Y') # Formata a data no padrão brasileiro (dd/mm/aaaa)
@@ -48,6 +52,35 @@ cursor.execute('''
     )
 ''')
 conn.commit()
+
+def send_email(file_path):
+    # Configurações do servidor SMTP do Gmail
+    smtp_server = 'smtp.gmail.com'
+    smtp_port = 587
+
+    # Credenciais de login no Gmail
+    email_username = 'tomate.irrigacao@gmail.com'
+    email_password = ''
+    email_client = '' #e-mail que receberá o arquivo
+
+    msg = MIMEMultipart()
+    msg['From'] = email_username
+    msg['To'] = email_client 
+    msg['Subject'] = 'Arquivo CSV de Previsão'
+
+    body = "Segue anexo o arquivo CSV de previsão."
+    msg.attach(MIMEText(body, 'plain'))
+
+    with open(file_path, 'rb') as f:
+        attachment = MIMEApplication(f.read(), _subtype="csv")
+        attachment.add_header('content-disposition', 'attachment', filename=file_path)
+        msg.attach(attachment)
+
+    server = smtplib.SMTP(smtp_server, smtp_port)
+    server.starttls()
+    server.login(email_username, email_password)
+    server.sendmail(email_username, email_client, msg.as_string())
+    server.quit()
 
 
 def hours():
@@ -91,6 +124,7 @@ def backup():
                 data, temperatura, umidade, descricao, hora = row
                 csvwriter.writerow([data, temperatura, umidade, descricao, hora])
 
+        send_email(backup)
         print("Dados salvos no arquivo CSV")
 
 #Coleta os dados da API
@@ -121,7 +155,7 @@ def collect_data():
 schedule.every(10).minutes.do(collect_data)
 
 # Agendar a função backup() a cada 10 horas
-schedule.every(10).hours.do(backup)
+schedule.every(10).seconds.do(backup)
 
 while True:
     schedule.run_pending()
