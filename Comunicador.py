@@ -28,7 +28,7 @@ insert_query = '''
 
 # Conectar ao banco de dados MySQL (db4free.net)
 conn = mysql.connector.connect(
-    host='', # Substitua pelo endereço IP ou nome do host do seu servidor MySQL
+    host='85.10.205.173', # Substitua pelo endereço IP ou nome do host do seu servidor MySQL
     user='',   # Substitua pelo nome de usuário do MySQL
     password='', # Substitua pela senha do MySQL
     database=''  # Substitua pelo nome do banco de dados
