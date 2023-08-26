@@ -53,6 +53,7 @@ cursor.execute('''
 ''')
 conn.commit()
 
+#função para envio de e-mail
 def send_email(file_path):
     # Configurações do servidor SMTP do Gmail
     smtp_server = 'smtp.gmail.com'
