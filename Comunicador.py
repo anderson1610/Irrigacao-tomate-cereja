@@ -81,6 +81,7 @@ def send_email(file_path):
     server.login(email_username, email_password)
     server.sendmail(email_username, email_client, msg.as_string())
     server.quit()
+    print('Email enviado!')
 
 
 def hours():
@@ -155,7 +156,7 @@ def collect_data():
 schedule.every(10).minutes.do(collect_data)
 
 # Agendar a função backup() a cada 10 horas
-schedule.every(10).seconds.do(backup)
+schedule.every(10).hours.do(backup)
 
 while True:
     schedule.run_pending()
