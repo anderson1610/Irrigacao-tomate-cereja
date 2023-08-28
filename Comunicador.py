@@ -1,8 +1,8 @@
-import requests
 import mysql.connector
 import time
 from datetime import datetime
 import csv
+import requests
 import getpass
 from pathlib import Path
 import schedule
@@ -18,27 +18,15 @@ data_formatada = int(data_string) # converte em INT
 api_key = '' # Substitua 'YOUR_API_KEY' pela sua chave da API OpenWeatherMap
 city_name = 'sao paulo' # Substitua 'YOUR_CITY_NAME' pelo nome da sua cidade
 
-# coletar informações no banco de dados
-get_query = '''
-    SELECT data, temperatura, umidade, descricao, hora  
-    FROM previsao
-'''
-
-# Inserir informações no banco de dados
-insert_query = '''
-    INSERT INTO previsao (data, temperatura, umidade, descricao, hora)
-    VALUES (%s, %s, %s, %s, %s)
-'''
-
 # Conectar ao banco de dados MySQL (db4free.net)
 conn = mysql.connector.connect(
     host='85.10.205.173', # Substitua pelo endereço IP ou nome do host do seu servidor MySQL
     user='',   # Substitua pelo nome de usuário do MySQL
     password='', # Substitua pela senha do MySQL
-    database=''  # Substitua pelo nome do banco de dados
+    database='tccarduino2023'  # Substitua pelo nome do banco de dados
 )
-cursor = conn.cursor()
 
+cursor = conn.cursor()
 
 # Criar a tabela se ela não existir
 cursor.execute('''
@@ -53,8 +41,51 @@ cursor.execute('''
 ''')
 conn.commit()
 
-#função para envio de e-mail
-def send_email(file_path):
+# coletar informações no banco de dados
+get_query = '''
+    SELECT data, temperatura, umidade, descricao, hora  
+    FROM previsao
+'''
+
+# Inserir informações no banco de dados
+insert_query = '''
+    INSERT INTO previsao (data, temperatura, umidade, descricao, hora)
+    VALUES (%s, %s, %s, %s, %s)
+'''
+
+#função para envio de e-mail com as informações do gasto de água
+def send_email_water(file_path):
+    # Configurações do servidor SMTP do Gmail
+    smtp_server = 'smtp.gmail.com'
+    smtp_port = 587
+
+    # Credenciais de login no Gmail
+    email_username = 'tomate.irrigacao@gmail.com'
+    email_password = ''
+    email_client = '' #e-mail que receberá o arquivo
+
+    msg = MIMEMultipart()
+    msg['From'] = email_username
+    msg['To'] = email_client 
+    msg['Subject'] = 'Arquivo CSV do fluxo/gasto de água'
+
+    body = "Segue anexo o arquivo CSV de gasto de água."
+    msg.attach(MIMEText(body, 'plain'))
+
+    with open(file_path, 'rb') as f:
+        attachment = MIMEApplication(f.read(), _subtype="csv")
+        attachment.add_header('content-disposition', 'attachment', filename=file_path)
+        msg.attach(attachment)
+
+    server = smtplib.SMTP(smtp_server, smtp_port)
+    server.starttls()
+    server.login(email_username, email_password)
+    server.sendmail(email_username, email_client, msg.as_string())
+    server.quit()
+    print('Email enviado!')
+
+#função para envio de e-mail backup do banco com as informações do tempo
+def send_email_backup(file_path):
     # Configurações do servidor SMTP do Gmail
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
@@ -83,6 +114,25 @@ def send_email(file_path):
     server.sendmail(email_username, email_client, msg.as_string())
     server.quit()
     print('Email enviado!')
+
+# Faixa 1: Até 10.33 metros cúbicos (m³)
+# Faixa 2: De 11 a 20 m³
+# Faixa 3: Acima de 20 m³
+# A tarifa para cada faixa é a seguinte:
+
+# Faixa 1: R$ 2,50 por m³
+# Faixa 2: R$ 3,00 por m³
+# Faixa 3: R$ 4,00 por m³
+
+# Calcular tarifa sabesp
+def ccalculate_fare(consumo):
+    if consumo <= 10.33:
+        return consumo * 2.5
+    elif consumo <= 20:
+        return (10 * 2.5) + ((consumo - 10) * 3)
+    else:
+        return (10 * 2.5) + (10 * 3) + ((consumo - 20) * 4)
+    
 
 
 def hours():
@@ -126,7 +176,7 @@ def backup():
                 data, temperatura, umidade, descricao, hora = row
                 csvwriter.writerow([data, temperatura, umidade, descricao, hora])
 
-        send_email(backup)
+        send_email_backup(backup)
         print("Dados salvos no arquivo CSV")
 
 #Coleta os dados da API
@@ -154,7 +204,7 @@ def collect_data():
     
 
 # Agendar a coleta de dados da API a cada 10 minutos
-schedule.every(10).minutes.do(collect_data)
+schedule.every(10).seconds.do(collect_data)
 
 # Agendar a função backup() a cada 10 horas
 schedule.every(10).hours.do(backup)
