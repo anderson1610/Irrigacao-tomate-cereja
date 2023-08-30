@@ -1,4 +1,3 @@
-
 import pandas as pd
 import datetime
 import locale
@@ -29,4 +28,4 @@ M2 = np.linalg.matrix_power(M1, 2)
 # Multiplicação de matrizes
 produto = np.dot(M1, M2)
 produto2 = int(produto[0][0])
-print(produto2)
+print(M1)
