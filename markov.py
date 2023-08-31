@@ -3,6 +3,9 @@ import datetime
 import locale
 import numpy as np
 
+# Configurar opções de exibição para arredondar números e não usar notação científica
+np.set_printoptions(precision=2, suppress=True)
+
 # Definir a localização para pt-BR
 locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 
