@@ -191,6 +191,8 @@ def collect_data():
         temperatura = data['main']['temp']
         umidade = data['main']['humidity']
         descricao = data['weather'][0]['description']
+        weather = data['weather'][0]['main']
+        print(weather)
         hours_current = hours()
 
         values = (data_formatada, temperatura, umidade, descricao, hours_current)
