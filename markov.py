@@ -145,7 +145,7 @@ def inserir_markov():
     values = (mes_atual, PROBABILIDADE_CHUVA)
     cursor.execute(insert_query, values)
     conn.commit()
-    print("Dados inseridos no banco de dados")
+    print(f"Dados do calculo de Markov referente ao mês de {mes_atual} do ano de {ano_atual} inseridos no banco de dados")
 
 inserir_markov()
 
