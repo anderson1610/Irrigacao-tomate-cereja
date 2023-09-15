@@ -15,7 +15,7 @@ from email.mime.application import MIMEApplication
 data_atual = datetime.now() # Obtém a data atual
 data_string = data_atual.strftime('%d%m%Y') # Formata a data no padrão brasileiro (dd/mm/aaaa)
 data_formatada = int(data_string) # converte em INT
-api_key = '0a97f2467da2268fdea3b4bb8f61b1ed' # Substitua 'YOUR_API_KEY' pela sua chave da API OpenWeatherMap
+api_key = '' # Substitua 'YOUR_API_KEY' pela sua chave da API OpenWeatherMap
 city_name = 'sao paulo' # Substitua 'YOUR_CITY_NAME' pelo nome da sua cidade
 
 # Conectar ao banco de dados MySQL (db4free.net)
@@ -147,8 +147,6 @@ def collect_data():
         temperatura = data['main']['temp']
         umidade = data['main']['humidity']
         descricao = data['weather'][0]['description']
-        weather = data['weather'][0]['main']
-        print(weather)
         hours_current = hours()
 
         values = (data_formatada, temperatura, umidade, descricao, hours_current)
@@ -203,7 +201,6 @@ def create_log_file_water():
     return log_file
 
 
-
 # Faixa 1: Até 10.33 metros cúbicos (m³)
 # Faixa 2: De 11 a 20 m³
 # Faixa 3: Acima de 20 m³
@@ -246,7 +243,7 @@ def calculate_send():
     
 
 #Agendar o envio de consumo de agua a cada 24 horas
-schedule.every(10).seconds.do(calculate_send)
+schedule.every(24).hours.do(calculate_send)
 
 # Agendar a coleta de dados da API a cada 10 minutos e envia ao banco de dados
 schedule.every(10).minutes.do(collect_data)
