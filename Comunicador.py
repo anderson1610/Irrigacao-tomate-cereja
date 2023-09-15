@@ -248,7 +248,7 @@ def calculate_send():
 #Agendar o envio de consumo de agua a cada 24 horas
 schedule.every(10).seconds.do(calculate_send)
 
-# Agendar a coleta de dados da API a cada 10 minutos
+# Agendar a coleta de dados da API a cada 10 minutos e envia ao banco de dados
 schedule.every(10).minutes.do(collect_data)
 
 # Agendar a função backup() a cada 10 horas
