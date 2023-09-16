@@ -108,8 +108,8 @@ def inserir_markov():
     # Conectar ao banco de dados MySQL (db4free.net)
     conn = mysql.connector.connect(
         host='85.10.205.173', # Substitua pelo endereço IP ou nome do host do seu servidor MySQL
-        user='',   # Substitua pelo nome de usuário do MySQL
-        password='', # Substitua pela senha do MySQL
+        user='anderson1610',   # Substitua pelo nome de usuário do MySQL
+        password='Mysql123@', # Substitua pela senha do MySQL
         database='tccarduino2023'  # Substitua pelo nome do banco de dados
     )
 
@@ -145,7 +145,4 @@ def inserir_markov():
     values = (mes_atual, PROBABILIDADE_CHUVA)
     cursor.execute(insert_query, values)
     conn.commit()
-    print(f"Dados do calculo de Markov referente ao mês de {mes_atual} do ano de {ano_atual} inseridos no banco de dados")
-
-inserir_markov()
-
+    print(f"Calculo de Markov referente ao mês de {mes_atual}/{ano_atual} inseridos no banco de dados")
