@@ -17,7 +17,13 @@ data_atual = datetime.now() # Obtém a data atual
 data_string = data_atual.strftime('%d%m%Y') # Formata a data no padrão brasileiro (dd/mm/aaaa)
 data_formatada = int(data_string) # converte em INT
 api_key = '' # Substitua 'YOUR_API_KEY' pela sua chave da API OpenWeatherMap
-city_name = 'sao paulo' # Substitua 'YOUR_CITY_NAME' pelo nome da sua cidade
+city_name = 'São Paulo' # Substitua 'YOUR_CITY_NAME' pelo nome da sua cidade
+weather_url = f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&lang=pt_br&units=metric&appid={api_key}' # URL da API OpenWeatherMap
+
+# Credenciais de login no Gmail
+email_username = 'tomate.irrigacao@gmail.com' 
+email_password = ''
+email_client = '' #e-mail que receberá o arquivo
 
 # Conectar ao banco de dados MySQL (db4free.net)
 conn = mysql.connector.connect(
@@ -66,11 +72,6 @@ def send_email_backup(file_path):
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
 
-    # Credenciais de login no Gmail
-    email_username = 'tomate.irrigacao@gmail.com'
-    email_password = ''
-    email_client = '' #e-mail que receberá o arquivo
-
     msg = MIMEMultipart()
     msg['From'] = email_username
     msg['To'] = email_client 
@@ -91,7 +92,7 @@ def send_email_backup(file_path):
     server.quit()
     print('Email de backup enviado!')
     
-
+#Coleta o horario atual em tipo inteiro
 def hours():
     # Configura o fuso horário para Brasília
     tz_brasil = 'America/Sao_Paulo'
@@ -103,6 +104,20 @@ def hours():
     hora_formatada =int(hora_atual_brasil.format('HHmm'))
     
     return hora_formatada
+
+#Coleta o hoario atual em tipo string
+def hours_default():
+    # Configura o fuso horário para Brasília
+    tz_brasil = 'America/Sao_Paulo'
+    
+    # Obtém a hora atual com o fuso horário de Brasília
+    hora_atual_brasil = arrow.now(tz_brasil)
+    
+    # Formata a hora no padrão desejado (HH:MM)
+    hora_formatada =hora_atual_brasil.format('HH:mm')
+    
+    return hora_formatada
+
 
 #Função que coleta o nome do usuario logado na maquina
 def get_username():
@@ -137,11 +152,8 @@ def backup():
         print("Dados de backup salvos no arquivo CSV")
         
 
-#Coleta os dados da API
+#Coleta os dados da API e envia ao banco de dados
 def collect_data():
-    # URL da API OpenWeatherMap
-    weather_url = f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&lang=pt_br&units=metric&appid={api_key}'
-
     response = requests.get(weather_url)
     data = response.json()
     
@@ -155,20 +167,31 @@ def collect_data():
         cursor.execute(insert_query, values)
         conn.commit()
         print("Dados referente a API inseridos no banco de dados")
+        return f'Temperatura: {temperatura} | Umidade: {umidade} | {city_name}: {descricao}'
     else:
         print("Erro ao obter dados da API")
 
+#Atualiza as informações da previsão na interface
+def info_interface():
+    response = requests.get(weather_url)
+    data = response.json()
+    
+    if response.status_code == 200:
+        temperatura = data['main']['temp']
+        descricao = data['weather'][0]['description']
+        descricao_m = descricao.capitalize()
+        Estado = city_name.upper()
+        hours_current = hours_default()
+        return f'{Estado} | Temperatura: {temperatura} {descricao_m} | Horário: {hours_current}'
+    else:
+        print("Erro ao obter dados da API")   
+        
 
 #função para envio de e-mail com as informações do gasto de água
 def send_email_water(file_path, consumption):
     # Configurações do servidor SMTP do Gmail
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
-
-    # Credenciais de login no Gmail
-    email_username = 'tomate.irrigacao@gmail.com'
-    email_password = ''
-    email_client = '' #e-mail que receberá o arquivo
 
     msg = MIMEMultipart()
     msg['From'] = email_username

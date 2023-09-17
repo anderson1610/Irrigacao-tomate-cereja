@@ -12,6 +12,9 @@ locale.setlocale(locale.LC_TIME, 'pt_BR.utf-8')
 # Variável global para armazenar a data e hora da última atualização
 ultima_atualizacao = ""
 
+# Variável global para armazenar os dados
+dados = ""
+
 # Função para redirecionar a saída para a área de texto
 def redirecionar_saida():
     class StdoutRedirector(object):
@@ -30,9 +33,17 @@ def redirecionar_saida():
 
     sys.stdout = StdoutRedirector(text_widget)
 
-# Função para chamar a função Servidor.interface() em uma thread separada
-def executar_interface():
-    Servidor.interface()
+# Função para coletar dados a cada 1 minuto e atualizar o rótulo
+def coletar_e_atualizar():
+    global dados
+    while True:
+        dados = Servidor.info_interface()  
+        atualizar_label()
+        time.sleep(5)  # Atualizar a cada 60 segundos 
+
+# Função para atualizar o rótulo com os dados coletados
+def atualizar_label():
+    label_dados.config(text=f"{dados}")
 
 # Função para atualizar a área de texto em tempo real
 def atualizar_info():
@@ -56,8 +67,19 @@ text_widget.pack()
 redirecionar_saida()
 
 # Iniciar a função Servidor.interface() em uma thread separada
+def executar_interface():
+    Servidor.interface()
+
 interface_thread = threading.Thread(target=executar_interface)
 interface_thread.start()
+
+# Criar um rótulo para exibir os dados coletados
+label_dados = tk.Label(root, text=f"{dados}")
+label_dados.pack()
+
+# Iniciar a thread para coletar dados e atualizar o rótulo
+coleta_thread = threading.Thread(target=coletar_e_atualizar)
+coleta_thread.start()
 
 # Iniciar a atualização da área de texto em tempo real
 atualizar_info()

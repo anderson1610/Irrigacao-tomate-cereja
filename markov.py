@@ -108,8 +108,8 @@ def inserir_markov():
     # Conectar ao banco de dados MySQL (db4free.net)
     conn = mysql.connector.connect(
         host='85.10.205.173', # Substitua pelo endereço IP ou nome do host do seu servidor MySQL
-        user='',   # Substitua pelo nome de usuário do MySQL
-        password='', # Substitua pela senha do MySQL
+        user='anderson1610',   # Substitua pelo nome de usuário do MySQL
+        password='Mysql123@', # Substitua pela senha do MySQL
         database='tccarduino2023'  # Substitua pelo nome do banco de dados
     )
 
@@ -138,7 +138,7 @@ def inserir_markov():
 
     #Realiza o calculo da matriz de markov de acordo com o ano e mês atual
     calculo = np.linalg.matrix_power(matriz_atual, referencia)
-    
+
     #Coleta a probabilidade do mês atual ser um mês chuvoso
     PROBABILIDADE_CHUVA = float(calculo[0][0])
 
