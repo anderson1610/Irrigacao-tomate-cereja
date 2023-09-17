@@ -5,15 +5,29 @@ import sys
 import time
 import Servidor 
 import locale
+from pathlib import Path
+import getpass
+from datetime import datetime
 
-# Configurar a localização para o padrão brasileiro
-locale.setlocale(locale.LC_TIME, 'pt_BR.utf-8')
+locale.setlocale(locale.LC_TIME, 'pt_BR.utf-8') # Configurar a localização para o padrão brasileiro
+ultima_atualizacao = "" # Variável global para armazenar a data e hora da última atualização
+dados = ""  # Variável global para armazenar os dados
+data_atual = datetime.now() # Obtém a data atual
+data_string = data_atual.strftime('%d%m%Y') # Formata a data no padrão brasileiro (dd/mm/aaaa)
 
-# Variável global para armazenar a data e hora da última atualização
-ultima_atualizacao = ""
+#Função que coleta o nome do usuario logado na maquina
+def get_username():
+    return getpass.getuser()
 
-# Variável global para armazenar os dados
-dados = ""
+#Cria o arquivo .txt para salvar as informações do servidor (log)
+def create_log_file():
+    name_user = get_username()
+    log_file = f"C:\\Users\\{name_user}\\Desktop\\LogSERVIDOR\\{data_string}_Servidor_LOG.txt"
+    path = Path(f"C:\\Users\\{name_user}\\Desktop\\LogSERVIDOR")
+    path.mkdir(parents=True, exist_ok=True)
+    with open(log_file, 'a') as arquivo:
+        pass
+    return log_file
 
 # Função para redirecionar a saída para a área de texto
 def redirecionar_saida():
@@ -30,6 +44,12 @@ def redirecionar_saida():
                 texto = str
             self.widget.insert(tk.END, texto)
             self.widget.see(tk.END)
+
+            LOG = create_log_file()
+
+            # Escrever os dados no arquivo log
+            with open(LOG, "a") as arquivo:
+                arquivo.write(texto + "\n")
 
     sys.stdout = StdoutRedirector(text_widget)
 
@@ -53,10 +73,10 @@ def atualizar_info():
 
 # Inicializar a janela tkinter
 root = tk.Tk()
-root.title("Servidor - IOT Tomate Cereja")
+root.title("Servidor - Tomate Cereja")
 
 # Criar um rótulo para descrever a área de texto
-label = tk.Label(root, text="ATUALIZAÇÕES DO SERVIDOR:")
+label = tk.Label(root, text="ATUALIZAÇÕES DO SERVIDOR", fg="red")
 label.pack()
 
 # Criar uma área de texto para exibir informações
