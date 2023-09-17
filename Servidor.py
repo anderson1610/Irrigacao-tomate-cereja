@@ -134,7 +134,7 @@ def create_log_file():
         pass
     return log_file
 
-#obtem todos as informações salvas na planilha previsao e salva em um csv
+#obtem todos as informações salvas no banco previsao e salva em um csv
 def backup():
         cursor.execute(get_query)
         result = cursor.fetchall()
@@ -243,7 +243,7 @@ def calculate_fare(consumo):
     else:
         return (10 * 2.5) + (10 * 3) + ((consumo - 20) * 4)
 
-#Pegar as informações do banco de consumo de agua, calcular o gasto de agua e enviar por e-mail
+#Pega as informações do banco de consumo de agua, calcular o gasto de agua e enviar por e-mail
 def calculate_send():
         
         cursor.execute(get_query_water)
