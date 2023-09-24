@@ -268,7 +268,7 @@ def calculate_send():
 #Função que realiza o agendamento das tarefas do servidor
 def interface():
 
-    #Agendar o envio do calculo da matriz de markov ao banco
+    #Agendar o envio do calculo da matriz de markov ao banco a cada 24 horas
     schedule.every(24).hours.do(markov.inserir_markov)
 
     #Agendar o envio de consumo de agua a cada 24 horas
