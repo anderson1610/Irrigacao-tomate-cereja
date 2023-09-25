@@ -142,7 +142,7 @@ def inserir_markov():
         calculo_passado = np.linalg.matrix_power(matriz_atual, referencia_passada)
         probabilidade_passada = float(calculo_passado[0][0])
 
-        if probabilidade_passada > 0.50:
+        if probabilidade_passada >= 0.50:
             #Realiza o calculo da matriz de markov de acordo com o ano e mês atual
             calculo = np.linalg.matrix_power(matriz_atual, referencia)    
             #Coleta a probabilidade do mês atual ser um mês chuvoso após o mês do ano anterior chuvoso
