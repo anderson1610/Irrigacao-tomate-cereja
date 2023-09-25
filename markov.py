@@ -32,7 +32,7 @@ MATRIZES_MARKOV = {
     ]),
 
     #Matriz de markov referente ao mês de Março definindo a probabilidades mês em 2023
-    'MARCO' : np.array([
+    'MARÇO' : np.array([
         [0.84, 1],
         [0.16, 0]
     ]),
@@ -136,13 +136,37 @@ def inserir_markov():
     # Coleta a key de referencia de acordo com o ano atual
     referencia = ANO_REFERENCIA.get(f'{ano_atual}')
 
-    #Realiza o calculo da matriz de markov de acordo com o ano e mês atual
-    calculo = np.linalg.matrix_power(matriz_atual, referencia)
+    if referencia >= 2:
+        referencia_passada = referencia - 1
+        #Realiza o calculo da matriz de markov do mês do ano anterior
+        calculo_passado = np.linalg.matrix_power(matriz_atual, referencia_passada)
+        probabilidade_passada = float(calculo_passado[0][0])
 
-    #Coleta a probabilidade do mês atual ser um mês chuvoso
-    PROBABILIDADE_CHUVA = float(calculo[0][0])
+        if probabilidade_passada > 0.50:
+            #Realiza o calculo da matriz de markov de acordo com o ano e mês atual
+            calculo = np.linalg.matrix_power(matriz_atual, referencia)    
+            #Coleta a probabilidade do mês atual ser um mês chuvoso após o mês do ano anterior chuvoso
+            PROBABILIDADE_CHUVA = float(calculo[0][0])
+            values = (mes_atual, PROBABILIDADE_CHUVA)
+            cursor.execute(insert_query, values)
+            conn.commit()
+            print(f"Calculo de Markov referente ao mês de {mes_atual}/{ano_atual} inseridos no banco de dados")
 
-    values = (mes_atual, PROBABILIDADE_CHUVA)
-    cursor.execute(insert_query, values)
-    conn.commit()
-    print(f"Calculo de Markov referente ao mês de {mes_atual}/{ano_atual} inseridos no banco de dados")
+        elif probabilidade_passada < 0.50:
+            #Realiza o calculo da matriz de markov de acordo com o ano e mês atual
+            calculo = np.linalg.matrix_power(matriz_atual, referencia)    
+            #Coleta a probabilidade do mês atual ser um mês chuvoso após o mês do ano anterior seco
+            PROBABILIDADE_CHUVA = float(calculo[1][0])
+            values = (mes_atual, PROBABILIDADE_CHUVA)
+            cursor.execute(insert_query, values)
+            conn.commit()
+            print(f"Calculo de Markov referente ao mês de {mes_atual}/{ano_atual} inseridos no banco de dados")      
+
+    else: 
+        #Realiza o calculo da matriz de markov de acordo com o ano e mês atual
+        calculo = np.linalg.matrix_power(matriz_atual, referencia)
+        PROBABILIDADE_CHUVA = float(calculo[0][0])
+        values = (mes_atual, PROBABILIDADE_CHUVA)
+        cursor.execute(insert_query, values)
+        conn.commit()
+        print(f"Calculo de Markov referente ao mês de {mes_atual}/{ano_atual} inseridos no banco de dados")
