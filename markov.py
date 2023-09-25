@@ -33,62 +33,62 @@ MATRIZES_MARKOV = {
 
     #Matriz de markov referente ao mês de Março definindo a probabilidades mês em 2023
     'MARCO' : np.array([
-        [0, 1],
-        [0, 0]
+        [0.84, 1],
+        [0.16, 0]
     ]),
 
     #Matriz de markov referente ao mês de Abril definindo a probabilidades mês em 2023
     'ABRIL' : np.array([
-        [0, 0],
-        [0, 0]
+        [0.33, 0.17],
+        [0.67, 0.83]
     ]),
 
     #Matriz de markov referente ao mês de Maio definindo a probabilidades mês em 2023
     'MAIO' : np.array([
-        [0, 0],
-        [0, 0]
+        [0, 0.1],
+        [1, 0.9]
     ]),
 
     #Matriz de markov referente ao mês de Junho definindo a probabilidades mês em 2023
     'JUNHO' : np.array([
-        [0, 0],
-        [0, 0]
+        [0.5, 0.11],
+        [0.5, 0.89]
     ]),
 
     #Matriz de markov referente ao mês de Julho definindo a probabilidades mês em 2023
     'JUNLHO' : np.array([
-        [0, 0],
-        [0, 0]
+        [0, 0.1],
+        [1, 0.9]
     ]),
 
     #Matriz de markov referente ao mês de Agosto definindo a probabilidades mês em 2023
     'AGOSTO' : np.array([
         [0, 0],
-        [0, 0]
+        [0, 1]
     ]),
 
     #Matriz de markov referente ao mês de Setembro definindo a probabilidades mês em 2023
     'SETEMBRO' : np.array([
-        [0.83, 1],
-        [0.17, 0]
+        [0, 0.11],
+        [1, 0.89]
     ]),
 
     #Matriz de markov referente ao mês de Outubro definindo a probabilidades mês em 2023
     'OUTUBRO' : np.array([
-        [0, 0],
-        [0, 0]
+        [0.25, 0.18],
+        [0.75, 0.82]
     ]),
 
     #Matriz de markov referente ao mês de Novembro definindo a probabilidades mês em 2023
     'NOVEMBRO' : np.array([
-        [0, 0],
-        [0, 0]
+        [0.77, 1],
+        [0.23, 0]
     ]),
 
     #Matriz de markov referente ao mês de Dezembro definindo a probabilidades mês em 2023
     'DEZEMBRO' : np.array([
-        [0, 0],
-        [0, 0]
+        [0.84, 1],
+        [0.16, 0]
     ]),
 
 }
