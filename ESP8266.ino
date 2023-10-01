@@ -10,7 +10,7 @@ DHT dht(DHTPIN, DHTTYPE);
 
 // Defina o nome da sua rede Wi-Fi e a senha
 const char* ssid = "Anderson";
-const char* password = "8240361020c";
+const char* password = "";
 
 // Pino onde a boia está conectada
 const int boiaPin = D2;
