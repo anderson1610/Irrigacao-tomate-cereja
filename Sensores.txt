@@ -1,7 +1,7 @@
-D0 - Sensor de temperatura
+D3 - Sensor de temperatura
 D1 - Sensor de fluxo de agua
-D2 - Sensor tipo boia6
-D5 - Bomba 1
-D6 - Bomba 2
-D7 - Solenoide
+D2 - Sensor tipo boia 90°
+D5 - Bomba d'água 1 12V
+D6 - Bomba d'água 2 12V
+D7 - Solenoide 12V
 A0 - Sensor de umidade de solo
