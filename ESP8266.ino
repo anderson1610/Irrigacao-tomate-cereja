@@ -17,11 +17,25 @@ const int boiaPin = D2;
 int bomba1 = D5;
 int bomba2 = D6;
 int solenoide = D7;
+int sensorFluxoAgua = D1;
+volatile long pulse;
+unsigned long lastTime;
+float volume;
 
 
 void setup() {
+
   // Inicialize a comunicação serial
   Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(boiaPin, INPUT); //define o pino do sensor como entrada 
+  dht.begin();
+  pinMode(bomba1, OUTPUT);
+  pinMode(bomba2, OUTPUT);
+  pinMode(solenoide, OUTPUT);
+  pinMode(sensorFluxoAgua, INPUT);
+  attachInterrupt(digitalPinToInterrupt(sensorFluxoAgua), increase, RISING);
+  
 
   // Conecte-se à rede Wi-Fi
   WiFi.begin(ssid, password);
@@ -31,13 +45,7 @@ void setup() {
     Serial.println("Conectando ao WiFi...");
   }
   Serial.println("Conectado ao WiFi");
-
-  // Configure o pino da boia como entrada
-  pinMode(boiaPin, INPUT); /*define o pino do sensor como entrada do Arduino*/
-  dht.begin();
-  pinMode(bomba1, OUTPUT);
-  pinMode(bomba2, OUTPUT);
-  pinMode(solenoide, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void loop() /*laço de repetição*/
@@ -47,6 +55,18 @@ void loop() /*laço de repetição*/
   verificarUmidadeSolo();
 }
 
+void medirFluxoAgua(){
+
+  volume = (pulse * 4.5) / 1000.0;
+  Serial.print(volume);
+  Serial.println(" L/min");
+
+}
+
+ICACHE_RAM_ATTR void increase() {
+  pulse++;
+}
+
 void verificarBoia(){
   int estado = digitalRead(boiaPin); /*estado é igual a leitura digital*/
   Serial.print("Estado sensor : "); /*Printa "Estado do sensor:" */
@@ -54,6 +74,7 @@ void verificarBoia(){
   if (estado == 0){
     Serial.println("Enchendo o reservatorio");
     digitalWrite(solenoide, LOW);
+    medirFluxoAgua();
   } else{
     Serial.println("Reservatorio cheio");
     digitalWrite(solenoide, HIGH);
