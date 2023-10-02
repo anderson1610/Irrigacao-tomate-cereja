@@ -2,15 +2,21 @@
 #include <ESP8266WiFi.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+#include <TimeLib.h>
 
 #define SENSOR_TEMPERATURA A0
-#define DHTPIN D3      // Defina a porta onde o sensor está conectado
-#define DHTTYPE DHT11   // Defina o tipo de sensor 
+#define DHTPIN D3      
+#define DHTTYPE DHT11   
 DHT dht(DHTPIN, DHTTYPE);
 
 // Defina o nome da sua rede Wi-Fi e a senha
 const char* ssid = "Anderson";
-const char* password = "";
+const char* password = "8240361020c";
+
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org");
 
 // Pino onde a boia está conectada
 const int boiaPin = D2;
@@ -19,8 +25,8 @@ int bomba2 = D6;
 int solenoide = D7;
 int sensorFluxoAgua = D1;
 volatile long pulse;
-unsigned long lastTime;
-float volume;
+float volume; //Onde é armazenada o consumo de agua
+int dataInt;
 
 
 void setup() {
@@ -46,6 +52,8 @@ void setup() {
   }
   Serial.println("Conectado ao WiFi");
   digitalWrite(LED_BUILTIN, HIGH);
+  timeClient.begin();
+  timeClient.setTimeOffset(0); // Defina o deslocamento de fuso horário, se necessário
 }
 
 void loop() /*laço de repetição*/
@@ -53,6 +61,24 @@ void loop() /*laço de repetição*/
   verificarBoia();
   verificarTemperatura();
   verificarUmidadeSolo();
+  dataAtual();
+}
+
+
+
+void dataAtual(){
+
+  timeClient.update();
+
+  // Obter a data e hora atual
+  time_t rawTime = timeClient.getEpochTime();
+  struct tm *timeInfo = localtime(&rawTime);
+
+  // Formatar a data no formato numérico (ddmmyyyy)
+  int dataInt = (timeInfo->tm_mday * 1000000) + ((timeInfo->tm_mon + 1) * 10000) + (1900 + timeInfo->tm_year);
+
+  Serial.print("Data atual em formato numérico: ");
+  Serial.println(dataInt);
 }
 
 void medirFluxoAgua(){
@@ -110,6 +136,7 @@ void verificarUmidadeSolo(){
   Serial.print("Umidade do solo: ");
   Serial.print(umidadeSolo);
   Serial.println("%");
+  digitalWrite(bomba1, LOW);
 
   delay(100);  // Aguarde alguns segundos entre as leituras
 
