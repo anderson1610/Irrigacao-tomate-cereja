@@ -22,8 +22,8 @@ weather_url = f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&lan
 
 # Credenciais de login no Gmail
 email_username = 'tomate.irrigacao@gmail.com' 
-email_password = 'duxnmawxwfipxqtm'
-email_client = 'anderson101214@hotmail.com' #e-mail que receberá o arquivo
+email_password = ''
+email_client = '' #e-mail que receberá o arquivo
 
 # Conectar ao banco de dados MySQL (db4free.net)
 conn = mysql.connector.connect(
