@@ -1,4 +1,3 @@
-// Inclua a biblioteca ESP8266WiFi
 #include <ESP8266WiFi.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
@@ -27,17 +26,19 @@ WiFiClient wifiClient; // Criar um objeto WiFiClient
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
 
-// Pino onde a boia está conectada
-const int boiaPin = D2;
-int bomba1 = D5;
-int bomba2 = D6;
-int solenoide = D7;
-int sensorFluxoAgua = D1;
+
+const int boiaPin = D2; // Pino onde a boia está conectada
+int bomba1 = D5; // Pino onde a mini bomba d'agua esta conectada
+int bomba2 = D6; // Pino onde a mini bomba d'agua 2 esta conectada
+int solenoide = D7; // Pino onde a solenoide esta conectada
+int sensorFluxoAgua = D1; //Pino onde o sensor de fluxo de agua esta conectado
 volatile long pulse;
 float volume; //Onde é armazenada o consumo de agua
 int dataInt; //Data atual em formato INT
-String mes;
-float probabilidade;
+String mes;  //Mês da probabilidade adquirida por Markov
+float probabilidade; //Probabilidade do Mes atual por Markov
+float temperatura_api; // Temperatura de São Paulo fornecida pela API openweathermap
+float umidade_api; // Umidade de São Paulo fornecida pela API openweathermap
 
 
 void setup() {
@@ -72,9 +73,56 @@ void loop() /*laço de repetição*/
   verificarBoia();
   verificarTemperatura();
   verificarUmidadeSolo();
-  obter_Markov();
+  info_openweathermap();
 }
 
+//função onde é realizado a coleta de temperatura e umidade referente a cidade de São Paulo
+void info_openweathermap(){
+
+  // Inicializar o cliente HTTP
+  HTTPClient http;
+
+  // Construir a URL da solicitação
+  String url = "http://" + String(serverIP) + ":" + String(serverPort) + "/obter_ultima_previsao";
+
+  // Enviar uma solicitação GET para obter os dados da planilha previsao
+  http.begin(wifiClient, url); // Use wifiClient como primeiro argumento
+
+  int httpResponseCode = http.GET();
+
+  // Verificar a resposta da solicitação
+  if (httpResponseCode == 200) {
+    String response = http.getString();
+
+    // Analisar a resposta JSON para obter temperatura e umidade da API openweathermap
+    StaticJsonDocument<200> doc;
+    DeserializationError error = deserializeJson(doc, response);
+
+    if (!error) {
+      temperatura_api = doc["temperatura"];
+      umidade_api = doc["umidade"];
+      Serial.print("Temperatura de São Paulo: ");
+      Serial.print(temperatura_api);
+      Serial.print(" Umidade de São Paulo: ");
+      Serial.println(umidade_api);
+    } else {
+      Serial.println("Erro ao analisar JSON");
+    }
+  } else {
+    Serial.print("Erro na solicitação HTTP. Código de resposta: ");
+    Serial.println(httpResponseCode);
+    Serial.print("Temperatura de São Paulo: ");
+    Serial.print(temperatura_api);
+    Serial.print(" Umidade de São Paulo: ");
+    Serial.println(umidade_api);
+  }
+
+  // Liberar recursos do cliente HTTP
+  http.end();
+
+}
+
+//Função responsalvel por coletar a probabilidade de chuva calculada pelo metodo de Markov referente a cada Mês do ano, mais precisamente ela coleta do mês atual
 void obter_Markov(){
 
 // Inicializar o cliente HTTP
@@ -91,8 +139,6 @@ void obter_Markov(){
   // Verificar a resposta da solicitação
   if (httpResponseCode == HTTP_CODE_OK) {
     String response = http.getString();
-    Serial.println("Resposta da API:");
-    Serial.println(response);
 
     // Fazer o parsing dos dados JSON
     DynamicJsonDocument doc(1024); // Tamanho do buffer deve ser ajustado conforme necessário
@@ -103,19 +149,24 @@ void obter_Markov(){
     probabilidade = doc["Probabilidade"].as<float>();
 
     // Agora você pode usar as variáveis mes e probabilidade conforme necessário
-    Serial.print("Mês: ");
+    Serial.print("Mês da coleta Markov: ");
     Serial.println(mes);
-    Serial.print("Probabilidade: ");
+    Serial.print("Probabilidade Markov: ");
     Serial.println(probabilidade);
   } else {
     Serial.print("Erro na solicitação HTTP. Código de resposta: ");
     Serial.println(httpResponseCode);
+    Serial.print("Mês da coleta Markov: ");
+    Serial.println(mes);
+    Serial.print("Probabilidade Markov: ");
+    Serial.println(probabilidade);
   }
 
   // Liberar recursos do cliente HTTP
   http.end();
 }
 
+//Função responsavel por adicionar ao banco de dados o consumo de agua coletado pelo sensor de fluxo de agua
 void add_custoAgua(){
   int valorData = dataAtual();
 
@@ -149,7 +200,7 @@ void add_custoAgua(){
 
 }
 
-
+//Função que retorna a data atual
 int dataAtual(){
 
   timeClient.update();
@@ -166,6 +217,7 @@ int dataAtual(){
   return dataInt;
 }
 
+//Função que coleta as informações do sensor de fluxo de agua
 void medirFluxoAgua(){
 
   volume = (pulse * 4.5) / 1000.0;
@@ -177,6 +229,7 @@ ICACHE_RAM_ATTR void increase() {
   pulse++;
 }
 
+//Função que verifica a posição do sensor tipo boia de nivel de agua
 void verificarBoia(){
   int estado = digitalRead(boiaPin); /*estado é igual a leitura digital*/
   Serial.print("Estado sensor : "); /*Printa "Estado do sensor:" */
@@ -192,6 +245,7 @@ void verificarBoia(){
   delay(100); /*atraso de 0,1s*/
 }
 
+//Função que coleta as informações do sensor DHT11
 void verificarTemperatura(){
   delay(100);  // Aguarde alguns segundos entre as leituras
 
@@ -212,6 +266,7 @@ void verificarTemperatura(){
 
 }
 
+//Função que coleta as informações do sensor de umidade de solo
 void verificarUmidadeSolo(){
 
   int valorAnalogico = analogRead(SENSOR_TEMPERATURA);

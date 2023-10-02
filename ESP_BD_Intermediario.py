@@ -12,7 +12,7 @@ ano_atual = data_atual.year
 
 # Configurações de conexão com o banco de dados
 db_config = {
-    'user': '',
+    'user': 'anderson1610',
     'password': '',
     'host': '85.10.205.173', # Normalmente, o host é o endereço IP do servidor MySQL no db4free
     'database': 'tccarduino2023' # Nome do banco de dados
@@ -67,6 +67,34 @@ def obter_dados_markov():
             return jsonify(data)
         else:
             return jsonify({"error": "Nenhum dado encontrado"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    
+
+@app.route('/obter_ultima_previsao', methods=['GET'])
+def obter_ultima_previsao():
+    try:
+        # Conectar ao banco de dados
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        # Executar uma consulta para obter a linha com o maior valor na coluna `ID`
+        sql = "SELECT temperatura, umidade FROM previsao WHERE ID = (SELECT MAX(ID) FROM previsao)"
+        cursor.execute(sql)
+
+        # Recuperar o resultado
+        result = cursor.fetchone()
+
+        # Fechar a conexão com o banco de dados
+        cursor.close()
+        connection.close()
+
+        if result:
+            temperatura, umidade = result
+            return jsonify({"temperatura": temperatura, "umidade": umidade})
+        else:
+            return jsonify({"error": "Nenhum dado encontrado na planilha 'previsao'"})
 
     except Exception as e:
         return jsonify({"error": str(e)})
