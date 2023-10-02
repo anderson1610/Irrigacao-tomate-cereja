@@ -12,7 +12,7 @@ ano_atual = data_atual.year
 
 # Configurações de conexão com o banco de dados
 db_config = {
-    'user': 'anderson1610',
+    'user': '',
     'password': '',
     'host': '85.10.205.173', # Normalmente, o host é o endereço IP do servidor MySQL no db4free
     'database': 'tccarduino2023' # Nome do banco de dados
