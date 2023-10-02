@@ -118,8 +118,9 @@ def inserir_markov():
     # Criar a tabela se ela não existir
     cursor.execute(f'''
         CREATE TABLE IF NOT EXISTS Markov{ano_atual} (
-            Mes TEXT,      
-            Probabilidade FLOAT
+        ID INT AUTO_INCREMENT PRIMARY KEY,
+        Mes TEXT,
+        Probabilidade FLOAT
         )
     ''')
     conn.commit()

@@ -1,11 +1,18 @@
 from flask import Flask, request, jsonify
 import mysql.connector
+import datetime
 
 app = Flask(__name__)
 
+# Obtenha a data atual
+data_atual = datetime.datetime.now()
+
+# Extraia o ano da data atual
+ano_atual = data_atual.year
+
 # Configurações de conexão com o banco de dados
 db_config = {
-    'user': 'anderson1610',
+    'user': '',
     'password': '',
     'host': '85.10.205.173', # Normalmente, o host é o endereço IP do servidor MySQL no db4free
     'database': 'tccarduino2023' # Nome do banco de dados
@@ -32,6 +39,34 @@ def adicionar_dados():
         connection.close()
 
         return jsonify({"message": "Dados inseridos com sucesso!"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    
+
+@app.route('/obter_dados_markov', methods=['GET'])
+def obter_dados_markov():
+    try:
+        # Conectar ao banco de dados
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        # Executar uma consulta para obter a última linha da planilha Markov2023
+        sql = f"SELECT Mes, Probabilidade FROM Markov{ano_atual} WHERE ID = (SELECT MAX(ID) FROM Markov{ano_atual})"
+        cursor.execute(sql)
+
+        # Recuperar o resultado
+        result = cursor.fetchone()
+
+        # Fechar a conexão com o banco de dados
+        cursor.close()
+        connection.close()
+
+        if result:
+            data = {'Mes': result[0], 'Probabilidade': result[1]}
+            return jsonify(data)
+        else:
+            return jsonify({"error": "Nenhum dado encontrado"})
 
     except Exception as e:
         return jsonify({"error": str(e)})

@@ -38,6 +38,7 @@ cursor = conn.cursor()
 # Criar a tabela se ela não existir
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS previsao (
+        ID INT AUTO_INCREMENT PRIMARY KEY,
         data INT,      
         temperatura INT,
         umidade INT,

@@ -5,6 +5,8 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include <TimeLib.h>
+#include <ESP8266HTTPClient.h>
+#include <ArduinoJson.h>
 
 #define SENSOR_TEMPERATURA A0
 #define DHTPIN D3      
@@ -13,7 +15,14 @@ DHT dht(DHTPIN, DHTTYPE);
 
 // Defina o nome da sua rede Wi-Fi e a senha
 const char* ssid = "Anderson";
-const char* password = "8240361020c";
+const char* password = "";
+
+const char* serverIP = "192.168.15.48"; // Endereço IP do servidor onde a API Flask está hospedada
+const int serverPort = 5000; // Porta na qual a API Flask está escutando
+const String apiEndpoint = "/adicionar_dados"; // Rota da API para adicionar dados
+const String apiEndpoint2 = "/obter_dados_markov"; // Rota da API para obter dados da planilha Markov2023
+
+WiFiClient wifiClient; // Criar um objeto WiFiClient
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
@@ -26,7 +35,9 @@ int solenoide = D7;
 int sensorFluxoAgua = D1;
 volatile long pulse;
 float volume; //Onde é armazenada o consumo de agua
-int dataInt;
+int dataInt; //Data atual em formato INT
+String mes;
+float probabilidade;
 
 
 void setup() {
@@ -61,12 +72,85 @@ void loop() /*laço de repetição*/
   verificarBoia();
   verificarTemperatura();
   verificarUmidadeSolo();
-  dataAtual();
+  obter_Markov();
+}
+
+void obter_Markov(){
+
+// Inicializar o cliente HTTP
+  HTTPClient http;
+
+  // Construir a URL da solicitação
+  String url = "http://" + String(serverIP) + ":" + String(serverPort) + apiEndpoint2;
+
+  // Enviar uma solicitação GET para obter os dados da planilha Markov2023
+  http.begin(wifiClient, url); // Use wifiClient como primeiro argumento
+
+  int httpResponseCode = http.GET();
+
+  // Verificar a resposta da solicitação
+  if (httpResponseCode == HTTP_CODE_OK) {
+    String response = http.getString();
+    Serial.println("Resposta da API:");
+    Serial.println(response);
+
+    // Fazer o parsing dos dados JSON
+    DynamicJsonDocument doc(1024); // Tamanho do buffer deve ser ajustado conforme necessário
+    deserializeJson(doc, response);
+
+    // Extrair os valores das colunas Mes e Probabilidade
+    mes = doc["Mes"].as<String>();
+    probabilidade = doc["Probabilidade"].as<float>();
+
+    // Agora você pode usar as variáveis mes e probabilidade conforme necessário
+    Serial.print("Mês: ");
+    Serial.println(mes);
+    Serial.print("Probabilidade: ");
+    Serial.println(probabilidade);
+  } else {
+    Serial.print("Erro na solicitação HTTP. Código de resposta: ");
+    Serial.println(httpResponseCode);
+  }
+
+  // Liberar recursos do cliente HTTP
+  http.end();
+}
+
+void add_custoAgua(){
+  int valorData = dataAtual();
+
+  // Montar os dados em um formato JSON
+  String jsonData = "{\"Data\":" + String(valorData) + ",\"Gasto\":" + String(volume) + "}";
+
+  // Inicializar o cliente HTTP
+  HTTPClient http;
+
+  // Construir a URL da solicitação
+  String url = "http://" + String(serverIP) + ":" + String(serverPort) + apiEndpoint;
+
+  // Enviar uma solicitação POST com os dados JSON
+  http.begin(wifiClient, url); // Use wifiClient como primeiro argumento
+
+  http.addHeader("Content-Type", "application/json");
+
+  int httpResponseCode = http.POST(jsonData);
+
+  // Verificar a resposta da solicitação
+  if (httpResponseCode > 0) {
+    String response = http.getString();
+    Serial.println("Resposta da API: " + response);
+  } else {
+    Serial.print("Erro na solicitação HTTP. Código de resposta: ");
+    Serial.println(httpResponseCode);
+  }
+
+  // Liberar recursos do cliente HTTP
+  http.end();
+
 }
 
 
-
-void dataAtual(){
+int dataAtual(){
 
   timeClient.update();
 
@@ -78,7 +162,8 @@ void dataAtual(){
   int dataInt = (timeInfo->tm_mday * 1000000) + ((timeInfo->tm_mon + 1) * 10000) + (1900 + timeInfo->tm_year);
 
   Serial.print("Data atual em formato numérico: ");
-  Serial.println(dataInt);
+  //Serial.println(dataInt);
+  return dataInt;
 }
 
 void medirFluxoAgua(){
@@ -86,7 +171,6 @@ void medirFluxoAgua(){
   volume = (pulse * 4.5) / 1000.0;
   Serial.print(volume);
   Serial.println(" L/min");
-
 }
 
 ICACHE_RAM_ATTR void increase() {
