@@ -1,0 +1,1 @@
+web: gunicorn ESP_BD_Intermediario:app
