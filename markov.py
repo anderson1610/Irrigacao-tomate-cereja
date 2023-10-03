@@ -108,7 +108,7 @@ def inserir_markov():
     # Conectar ao banco de dados MySQL (db4free.net)
     conn = mysql.connector.connect(
         host='85.10.205.173', # Substitua pelo endereço IP ou nome do host do seu servidor MySQL
-        user='',   # Substitua pelo nome de usuário do MySQL
+        user='anderson1610',   # Substitua pelo nome de usuário do MySQL
         password='', # Substitua pela senha do MySQL
         database='tccarduino2023'  # Substitua pelo nome do banco de dados
     )

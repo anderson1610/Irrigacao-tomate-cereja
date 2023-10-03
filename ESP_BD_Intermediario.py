@@ -12,11 +12,15 @@ ano_atual = data_atual.year
 
 # Configurações de conexão com o banco de dados
 db_config = {
-    'user': '',
-    'password': '',
+    'user': 'anderson1610',
+    'password': 'Mysql123@',
     'host': '85.10.205.173', # Normalmente, o host é o endereço IP do servidor MySQL no db4free
     'database': 'tccarduino2023' # Nome do banco de dados
 }
+
+@app.route('/')
+def homepage():  
+    return 'API que liga o Banco de dados ao ESP8266   |   API NO AR'
 
 @app.route('/adicionar_dados', methods=['POST'])
 def adicionar_dados():

@@ -66,6 +66,8 @@ void setup() {
   digitalWrite(LED_BUILTIN, HIGH);
   timeClient.begin();
   timeClient.setTimeOffset(0); // Defina o deslocamento de fuso horário, se necessário
+  info_openweathermap(); // Inicia coletando as informações da temperatura e umidade de São Paulo
+  obter_Markov(); // Inicia coletando a probabilidade de chuva de Markov do mês atual
 }
 
 void loop() /*laço de repetição*/
@@ -73,7 +75,6 @@ void loop() /*laço de repetição*/
   verificarBoia();
   verificarTemperatura();
   verificarUmidadeSolo();
-  info_openweathermap();
 }
 
 //função onde é realizado a coleta de temperatura e umidade referente a cidade de São Paulo
