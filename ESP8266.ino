@@ -39,6 +39,23 @@ String mes;  //Mês da probabilidade adquirida por Markov
 float probabilidade; //Probabilidade do Mes atual por Markov
 float temperatura_api; // Temperatura de São Paulo fornecida pela API openweathermap
 float umidade_api; // Umidade de São Paulo fornecida pela API openweathermap
+int umidade_solo_ideal = 500; //Valor da umidade em que o solo deve estar
+int umidade_solo_maxima = 700; //Valor maximo seco que pode a umidade possa chegar
+int umidade_solo_minima = 350; //Valor da umididade maxima umida que possa chegar o solo, para não prejudicar o plantio
+
+unsigned long previousMillisBoia = 0;
+unsigned long previousMillisTemperatura = 0;
+unsigned long previousMillisUmidadeSolo = 0;
+unsigned long previousMillisObterMarkov = 0;
+unsigned long previousMillisInfoOpenweathermap = 0;
+unsigned long previousMillisAddCustoAgua = 0;
+
+const unsigned long intervalBoia = 10; // Intervalo para verificar a boia
+const unsigned long intervalTemperatura = 30000; // Intervalo para verificar a temperatura (por exemplo, 30 segundos)
+const unsigned long intervalUmidadeSolo = 10; // Intervalo para verificar a umidade do solo 
+const unsigned long intervalObterMarkov = 300000; // Intervalo para obter dados de Markov (por exemplo, 5 minutos)
+const unsigned long intervalInfoOpenweathermap = 600000; // Intervalo para obter dados de OpenWeatherMap (10 minutos)
+const unsigned long intervalAddCustoAgua =  300000;// Intervalo para adicionar dados de custo de água (5 minutos)
 
 
 void setup() {
@@ -70,11 +87,44 @@ void setup() {
   obter_Markov(); // Inicia coletando a probabilidade de chuva de Markov do mês atual
 }
 
-void loop() /*laço de repetição*/
-{ 
-  verificarBoia();
-  verificarTemperatura();
-  verificarUmidadeSolo();
+void loop() {
+  unsigned long currentMillis = millis();
+
+  // Verificar a boia
+  if (currentMillis - previousMillisBoia >= intervalBoia) {
+    previousMillisBoia = currentMillis;
+    verificarBoia();
+  }
+
+  // Verificar a temperatura
+  if (currentMillis - previousMillisTemperatura >= intervalTemperatura) {
+    previousMillisTemperatura = currentMillis;
+    verificarTemperatura();
+  }
+
+  // Verificar a umidade do solo
+  if (currentMillis - previousMillisUmidadeSolo >= intervalUmidadeSolo) {
+    previousMillisUmidadeSolo = currentMillis;
+    verificarUmidadeSolo();
+  }
+
+  // Obter dados de Markov
+  if (currentMillis - previousMillisObterMarkov >= intervalObterMarkov) {
+    previousMillisObterMarkov = currentMillis;
+    obter_Markov();
+  }
+
+  // Obter dados de OpenWeatherMap
+  if (currentMillis - previousMillisInfoOpenweathermap >= intervalInfoOpenweathermap) {
+    previousMillisInfoOpenweathermap = currentMillis;
+    info_openweathermap();
+  }
+
+  // Adicionar dados de custo de água
+  if (currentMillis - previousMillisAddCustoAgua >= intervalAddCustoAgua) {
+    previousMillisAddCustoAgua = currentMillis;
+    add_custoAgua();
+  }
 }
 
 //função onde é realizado a coleta de temperatura e umidade referente a cidade de São Paulo
@@ -212,8 +262,6 @@ int dataAtual(){
 
   // Formatar a data no formato numérico (ddmmyyyy)
   int dataInt = (timeInfo->tm_mday * 1000000) + ((timeInfo->tm_mon + 1) * 10000) + (1900 + timeInfo->tm_year);
-
-  Serial.print("Data atual em formato numérico: ");
   //Serial.println(dataInt);
   return dataInt;
 }
@@ -256,13 +304,22 @@ void verificarTemperatura(){
   if (isnan(temperatura) || isnan(umidade)) {
     Serial.println("Falha ao ler o sensor DHT11!");
   } else {
-    Serial.print("Temperatura: ");
+    Serial.print("Temperatura local: ");
     Serial.print(temperatura);
     Serial.println(" °C");
 
-    Serial.print("Umidade: ");
+    Serial.print("Umidade local: ");
     Serial.print(umidade);
     Serial.println(" %");
+
+    //desenvolvimento e produção do tomate
+    if (temperatura >= 10 && temperatura <= 34 ) {
+      Serial.println("| Temperatura OK para desenvolvimento e produção do tomate");
+    } else {
+      Serial.println("| Temperatura fora das recomendadas para desenvolvimento e produção do tomate");
+    //Add ação
+    }
+
   }
 
 }
@@ -276,7 +333,25 @@ void verificarUmidadeSolo(){
   Serial.print("Umidade do solo: ");
   Serial.print(umidadeSolo);
   Serial.println("%");
-  digitalWrite(bomba1, LOW);
+
+  if (umidadeSolo >= umidade_solo_maxima ){
+      digitalWrite(bomba1, LOW);  //Liga a bomba 1
+      digitalWrite(bomba2, LOW);  //Liga a bomba 2
+  }
+
+  if (umidadeSolo < umidade_solo_maxima && umidadeSolo >= umidade_solo_ideal ){
+      digitalWrite(bomba1, LOW); //Mantem apenas a bomba 1
+      digitalWrite(bomba2, HIGH); //Desliga a bomba 2
+
+      float probabilidade_convertida = probabilidade * 1000;
+      float pausa_probabilidade = 1000 + probabilidade_convertida;
+      delay(pausa_probabilidade);
+  }
+
+  if (umidadeSolo < umidade_solo_minima ){
+      digitalWrite(bomba1, HIGH); //Desliga a bomba 1
+      digitalWrite(bomba2, HIGH); //Desliga a bomba 2
+  }
 
   delay(100);  // Aguarde alguns segundos entre as leituras
 
