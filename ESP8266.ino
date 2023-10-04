@@ -41,7 +41,7 @@ float probabilidade; //Probabilidade do Mes atual por Markov
 float temperatura_api; // Temperatura de São Paulo fornecida pela API openweathermap
 float umidade_api; // Umidade de São Paulo fornecida pela API openweathermap
 int umidade_solo_ideal = 500; //Valor da umidade em que o solo deve estar
-int umidade_solo_maxima = 700; //Valor maximo seco que pode a umidade possa chegar
+int umidade_solo_maxima = 700; //Valor maximo seco que a umidade possa chegar
 int umidade_solo_minima = 350; //Valor da umididade maxima umida que possa chegar o solo, para não prejudicar o plantio
 
 unsigned long previousMillisBoia = 0;
@@ -51,9 +51,13 @@ unsigned long previousMillisObterMarkov = 0;
 unsigned long previousMillisInfoOpenweathermap = 0;
 unsigned long previousMillisAddCustoAgua = 0;
 
-const unsigned long intervalBoia = 10; // Intervalo para verificar a boia
+//Variaveis que coletam a probabilidade de chuva de acordo com Markov e definem como pausa na irrigação visando economia de agua
+float probabilidade_convertida = probabilidade * 1000;
+float pausa_probabilidade = 1000 + probabilidade_convertida;
+
+const unsigned long intervalBoia = 10; // Intervalo para verificar a boia e outras funções que necessitam de verificação constante
 const unsigned long intervalTemperatura = 30000; // Intervalo para verificar a temperatura (30 segundos)
-const unsigned long intervalUmidadeSolo = 10; // Intervalo para verificar a umidade do solo 
+const unsigned long intervalUmidadeSolo = pausa_probabilidade; // Intervalo para verificar a umidade do solo 
 const unsigned long intervalObterMarkov = 300000; // Intervalo para obter dados de Markov (5 minutos)
 const unsigned long intervalInfoOpenweathermap = 600000; // Intervalo para obter dados de OpenWeatherMap (10 minutos)
 const unsigned long intervalAddCustoAgua =  300000;// Intervalo para adicionar dados de custo de água (5 minutos)
@@ -91,10 +95,13 @@ void setup() {
 void loop() {
   unsigned long currentMillis = millis();
 
-  // Verificar a boia
+  // Verificar a boia e outras funções constantes
   if (currentMillis - previousMillisBoia >= intervalBoia) {
     previousMillisBoia = currentMillis;
     verificarBoia();
+    verificarSoloSeco();
+    verificarSoloUmidoMAIS();
+    verificarSensorSolo2();
   }
 
   // Verificar a temperatura
@@ -271,7 +278,7 @@ int dataAtual(){
 void medirFluxoAgua(){
 
   volume = (pulse * 4.5) / 1000.0;
-  Serial.print(volume);
+  Serial.print( volume);
   Serial.println(" L/min");
 }
 
@@ -285,11 +292,11 @@ void verificarBoia(){
   Serial.print("Estado sensor : "); /*Printa "Estado do sensor:" */
   Serial.println(estado); /*Printa a leitura de estado*/
   if (estado == 0){
-    Serial.println("Enchendo o reservatorio");
+    Serial.print("Enchendo o reservatorio ");
     digitalWrite(solenoide, LOW);
     medirFluxoAgua();
   } else{
-    Serial.println("Reservatorio cheio");
+    Serial.print("Reservatorio cheio ");
     digitalWrite(solenoide, HIGH);
   }
   delay(100); /*atraso de 0,1s*/
@@ -334,34 +341,69 @@ void verificarUmidadeSolo(){
   int valorDigital = digitalRead(SENSOR_UMIDADE_DE_SOLO2);
 
   if (valorDigital){
-    Serial.println("Solo seco");
+    Serial.print("Solo seco ");
   } else{
-    Serial.println("Solo umido");
+    Serial.print("Solo umido ideal");
   }
 
   Serial.print("Umidade do solo: ");
   Serial.print(umidadeSolo);
   Serial.println("%");
 
-  if (umidadeSolo >= umidade_solo_maxima ){
-      digitalWrite(bomba1, LOW);  //Liga a bomba 1
-      digitalWrite(bomba2, LOW);  //Liga a bomba 2
-  }
-
   if (umidadeSolo < umidade_solo_maxima && umidadeSolo >= umidade_solo_ideal ){
       digitalWrite(bomba1, LOW); //Mantem apenas a bomba 1
       digitalWrite(bomba2, HIGH); //Desliga a bomba 2
-
-      float probabilidade_convertida = probabilidade * 1000;
-      float pausa_probabilidade = 1000 + probabilidade_convertida;
-      delay(pausa_probabilidade);
+      Serial.print("Solo na umidade ideal, bomba 1 ligada");
+      digitalWrite(bomba1, HIGH);
   }
+}
+
+//Função que verifica se o solo esta umido demais e toma as medidas necessarias
+void verificarSoloUmidoMAIS(){
+
+  int valorAnalogico = analogRead(SENSOR_UMIDADE_DE_SOLO);
+  float umidadeSolo = valorAnalogico;
 
   if (umidadeSolo < umidade_solo_minima ){
+      Serial.print("Solo umido demais");
+      Serial.print(" Desligando bombas d'água ");
+
       digitalWrite(bomba1, HIGH); //Desliga a bomba 1
       digitalWrite(bomba2, HIGH); //Desliga a bomba 2
   }
 
-  delay(100);  // Aguarde alguns segundos entre as leituras
+}
+
+//Função que verifica se o solo esta seco demais e toma as medidas necessarias
+void verificarSoloSeco(){
+
+  int valorAnalogico = analogRead(SENSOR_UMIDADE_DE_SOLO);
+  float umidadeSolo = valorAnalogico;
+
+  int valorDigital = digitalRead(SENSOR_UMIDADE_DE_SOLO2);
+
+  if (valorDigital){
+    Serial.print("Solo seco");
+    digitalWrite(bomba2, LOW);  //Liga a bomba 2
+  } 
+
+  if (umidadeSolo >= umidade_solo_maxima ){
+      Serial.print(" Solo seco demais");
+      Serial.println(" Ligando bombas d'água ");
+
+      digitalWrite(bomba1, LOW);  //Liga a bomba 1
+      digitalWrite(bomba2, LOW);  //Liga a bomba 2
+  }
 
 }
+
+void verificarSensorSolo2(){
+  int valorDigital = digitalRead(SENSOR_UMIDADE_DE_SOLO2);
+  if (valorDigital){
+    Serial.print("Localização do sensor de umidade de solo 2 está seco | Ligando bomba 2 ");
+    digitalWrite(bomba2, LOW);  //Liga a bomba 2
+  } 
+}
+
+
+
