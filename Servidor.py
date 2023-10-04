@@ -258,7 +258,7 @@ def calculate_send():
 
             for row in result:
                 Data, Gasto  = row
-                consumption_money =+ Gasto
+                consumption_money = consumption_money + Gasto
                 csvwriter.writerow([Data, Gasto])
 
         consumption_total = calculate_fare(consumption_money)
