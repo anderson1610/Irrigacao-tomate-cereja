@@ -402,6 +402,7 @@ void verificarSoloSeco(){
 
 }
 
+//Função que verifica a localização do sensor de umidade de solo 2 que envia sinal digital
 void verificarSensorSolo2(){
   int valorDigital = digitalRead(SENSOR_UMIDADE_DE_SOLO2);
   if (valorDigital){
@@ -409,6 +410,3 @@ void verificarSensorSolo2(){
     digitalWrite(bomba2, LOW);  //Liga a bomba 2
   } 
 }
-
-
-
