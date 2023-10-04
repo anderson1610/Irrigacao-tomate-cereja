@@ -1,4 +1,5 @@
-A0 - Sensor de umidade de solo
+A0 - Sensor de umidade de solo com sinal analogico
+D0 - Sensor de umidade de solo com sinal digital
 D1 - Sensor de fluxo de agua
 D2 - Sensor tipo boia
 D3 - Sensor de temperatura

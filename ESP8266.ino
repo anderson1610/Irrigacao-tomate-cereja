@@ -7,8 +7,9 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
-#define SENSOR_TEMPERATURA A0
-#define DHTPIN D3      
+#define SENSOR_UMIDADE_DE_SOLO A0 //Sensor umidade de solo que recebe sinal analogico
+#define SENSOR_UMIDADE_DE_SOLO2 D0 //Sensor umidade de solo que recebe sinal digital
+#define DHTPIN D3    //Sensor de temperatura  
 #define DHTTYPE DHT11   
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -327,9 +328,17 @@ void verificarTemperatura(){
 //Função que coleta as informações do sensor de umidade de solo
 void verificarUmidadeSolo(){
 
-  int valorAnalogico = analogRead(SENSOR_TEMPERATURA);
+  int valorAnalogico = analogRead(SENSOR_UMIDADE_DE_SOLO);
   float umidadeSolo = valorAnalogico;
-  
+
+  int valorDigital = digitalRead(SENSOR_UMIDADE_DE_SOLO2);
+
+  if (valorDigital){
+    Serial.println("Solo seco");
+  } else{
+    Serial.println("Solo umido");
+  }
+
   Serial.print("Umidade do solo: ");
   Serial.print(umidadeSolo);
   Serial.println("%");
