@@ -9,7 +9,7 @@
 
 #define SENSOR_UMIDADE_DE_SOLO A0 //Sensor umidade de solo que recebe sinal analogico
 #define SENSOR_UMIDADE_DE_SOLO2 D0 //Sensor umidade de solo que recebe sinal digital
-#define DHTPIN D3    //Sensor de temperatura  
+#define DHTPIN D3      
 #define DHTTYPE DHT11   
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -52,9 +52,9 @@ unsigned long previousMillisInfoOpenweathermap = 0;
 unsigned long previousMillisAddCustoAgua = 0;
 
 const unsigned long intervalBoia = 10; // Intervalo para verificar a boia
-const unsigned long intervalTemperatura = 30000; // Intervalo para verificar a temperatura (por exemplo, 30 segundos)
+const unsigned long intervalTemperatura = 30000; // Intervalo para verificar a temperatura (30 segundos)
 const unsigned long intervalUmidadeSolo = 10; // Intervalo para verificar a umidade do solo 
-const unsigned long intervalObterMarkov = 300000; // Intervalo para obter dados de Markov (por exemplo, 5 minutos)
+const unsigned long intervalObterMarkov = 300000; // Intervalo para obter dados de Markov (5 minutos)
 const unsigned long intervalInfoOpenweathermap = 600000; // Intervalo para obter dados de OpenWeatherMap (10 minutos)
 const unsigned long intervalAddCustoAgua =  300000;// Intervalo para adicionar dados de custo de água (5 minutos)
 
