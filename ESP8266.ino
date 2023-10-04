@@ -322,9 +322,14 @@ void verificarTemperatura(){
 
     //desenvolvimento e produção do tomate
     if (temperatura >= 10 && temperatura <= 34 ) {
-      Serial.println("| Temperatura OK para desenvolvimento e produção do tomate");
+      Serial.print("| Temperatura do local esta ideal para desenvolvimento e produção do tomate");
+      
+      if (temperatura_api >= 10 && temperatura_api <= 34){
+        Serial.print("| Temperatura de São Paulo esta ideal para desenvolvimento e produção do tomate");
+      }
+
     } else {
-      Serial.println("| Temperatura fora das recomendadas para desenvolvimento e produção do tomate");
+      Serial.print("| Temperatura local fora das recomendadas para desenvolvimento e produção do tomate");
     //Add ação
     }
 
