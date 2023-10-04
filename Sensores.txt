@@ -3,7 +3,6 @@ D0 - Sensor de umidade de solo com sinal digital
 D1 - Sensor de fluxo de agua
 D2 - Sensor tipo boia
 D3 - Sensor de temperatura
-D4 - Sensor de umidade de solo 2
 D5 - Bomba 1
 D6 - Bomba 2
 D7 - Solenoide
