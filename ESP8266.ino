@@ -9,7 +9,7 @@
 #include <BlynkSimpleEsp8266.h>
 //Credenciais para acessar o APP BlynkIOT
 #define BLYNK_TEMPLATE_ID ""
-#define BLYNK_TEMPLATE_NAME "TomateCereja"
+#define BLYNK_TEMPLATE_NAME ""
 #define BLYNK_AUTH_TOKEN ""
 #define BLYNK_PRINT Serial 
 
@@ -314,9 +314,11 @@ void verificarBoia(){
   if (estado == 0){
     Serial.print("Enchendo o reservatorio ");
     digitalWrite(solenoide, LOW);
+    Blynk.virtualWrite(V7, estado); //Indicador no Blynk se o Reservatorio esta cheio ou não
     medirFluxoAgua();
   } else{
     Serial.print("Reservatorio cheio ");
+    Blynk.virtualWrite(V7, estado); //Indicador no Blynk se o Reservatorio esta cheio ou não
     digitalWrite(solenoide, HIGH);
   }
   delay(100); /*atraso de 0,1s*/
