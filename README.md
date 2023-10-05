@@ -44,9 +44,29 @@ Para facilitar a comunicação entre o banco de dados e o dispositivo ESP8266, d
 
 O dispositivo ESP8266 foi programado meticulosamente para otimizar seu desempenho e fornecer os resultados prometidos: um método de cultivo eficiente de tomate cereja com um consumo de água minimizado. A abordagem tecnológica adotada neste projeto visa criar um sistema integrado que permita aos agricultores domésticos tomar decisões informadas sobre a irrigação, economizando recursos e contribuindo para a sustentabilidade ambiental.
 
-Interface servidor:
+Servidor:
 
 
 ![Screenshot_20231004-231955_Microsoft Remote Desktop.jpg](https://github.com/anderson1610/Irrigacao-tomate-cereja/assets/74426791/6b5e3d12-26e7-4079-9148-879883bb7eb5)
 
 Interface que relata o que está sendo feito pelo servidor e o horário que foi feito.
+
+Funções:
+
+1. Backup do Banco de Dados:
+
+O servidor é encarregado de realizar cópias de segurança regulares do nosso banco de dados. Os dados são formatados em arquivos CSV para facilitar o acesso. Essas cópias de segurança são salvas localmente na máquina e, em seguida, enviadas por e-mail aos usuários para garantir a segurança dos dados.
+
+2. Coleta e Cálculo de Consumo de Água:
+
+O servidor coleta os dados de consumo de água do nosso projeto. Com base nas tarifas da Sabesp, realiza cálculos precisos para determinar o custo do consumo. Os resultados são enviados aos usuários para que tenham uma compreensão clara do seu gasto com água.
+
+3. Requisições à API OPENWEATHERMAP:
+
+Para manter nossos usuários informados sobre as condições climáticas em tempo real na cidade de São Paulo, o servidor faz requisições constantes à API OPENWEATHERMAP. Esses dados são coletados e armazenados em nosso banco de dados, permitindo que os usuários tenham acesso às informações mais recentes.
+
+4. Coleta de Probabilidade de Chuva pelo Algoritmo de Markov:
+
+O servidor desempenha um papel fundamental na obtenção da probabilidade de chuva por meio do algoritmo de Markov. Esses valores são coletados e integrados ao nosso banco de dados para uso em cálculos relacionados à irrigação e outras decisões importantes relacionadas ao cultivo de tomate cereja.
+
+Em resumo, o servidor é o núcleo central do nosso projeto, coordenando várias tarefas essenciais para um cultivo eficiente e bem-sucedido de tomate cereja. Ele garante que nossos usuários tenham acesso a informações atualizadas, economizem recursos e tomem decisões informadas com base nas condições climáticas locais.
