@@ -44,3 +44,9 @@ Para facilitar a comunicação entre o banco de dados e o dispositivo ESP8266, d
 
 O dispositivo ESP8266 foi programado meticulosamente para otimizar seu desempenho e fornecer os resultados prometidos: um método de cultivo eficiente de tomate cereja com um consumo de água minimizado. A abordagem tecnológica adotada neste projeto visa criar um sistema integrado que permita aos agricultores domésticos tomar decisões informadas sobre a irrigação, economizando recursos e contribuindo para a sustentabilidade ambiental.
 
+Interface servidor:
+
+
+![Screenshot_20231004-231955_Microsoft Remote Desktop.jpg](https://github.com/anderson1610/Irrigacao-tomate-cereja/assets/74426791/6b5e3d12-26e7-4079-9148-879883bb7eb5)
+
+Interface que relata o que está sendo feito pelo servidor e o horário que foi feito.
