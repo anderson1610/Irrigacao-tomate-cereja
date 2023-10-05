@@ -80,3 +80,23 @@ funções:
 - Coletar informações do banco de dados.
 
 - Inserir informações ao banco de dados.
+
+ESP8266:
+
+![IMG-20230927-WA0007.jpg](https://github.com/anderson1610/Irrigacao-tomate-cereja/assets/74426791/272bc0ed-5122-4b43-8871-4888975303e5)
+
+O ESP8266 é uma peça incrível de tecnologia que desempenha um papel crucial em projetos de IoT (Internet das Coisas) e automação residencial. Vamos dar uma visão geral do que é e do que ele faz.
+
+É um módulo de comunicação Wi-Fi altamente versátil e de baixo custo.
+
+Funções:
+
+- Conexão à Internet: O ESP8266 permite que dispositivos se conectem à Internet sem fio, abrindo um mundo de possibilidades para controle remoto e monitoramento.
+
+- Automação: É frequentemente usado para automatizar dispositivos domésticos, como luzes, termostatos e fechaduras, tornando-os inteligentes e controláveis por meio de smartphones ou comandos de voz.
+
+- Coleta de Dados: Pode ser usado para coletar dados de sensores, como temperatura, umidade e movimento, e transmiti-los para a nuvem.
+
+- Integração: Pode ser integrado a plataformas como o Arduino, tornando-o uma escolha popular para projetos de hardware DIY.
+
+Em resumo, o ESP8266 é uma ferramenta poderosa que permite a conexão de dispositivos e a criação de soluções de IoT de maneira econômica. Sua versatilidade e capacidade de comunicação sem fio tornam-no uma escolha popular para uma ampla gama de projetos, desde controle de dispositivos domésticos até coleta de dados e automação industrial.
