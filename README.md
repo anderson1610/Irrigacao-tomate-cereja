@@ -70,3 +70,13 @@ Para manter nossos usuários informados sobre as condições climáticas em temp
 O servidor desempenha um papel fundamental na obtenção da probabilidade de chuva por meio do algoritmo de Markov. Esses valores são coletados e integrados ao nosso banco de dados para uso em cálculos relacionados à irrigação e outras decisões importantes relacionadas ao cultivo de tomate cereja.
 
 Em resumo, o servidor é o núcleo central do nosso projeto, coordenando várias tarefas essenciais para um cultivo eficiente e bem-sucedido de tomate cereja. Ele garante que nossos usuários tenham acesso a informações atualizadas, economizem recursos e tomem decisões informadas com base nas condições climáticas locais.
+
+API responsável por responder as requisições do ESP8266: 
+
+![IMG-20231003-WA0026.jpg](https://github.com/anderson1610/Irrigacao-tomate-cereja/assets/74426791/7594492e-76e4-4c07-ae3c-c0f50697e6d8)
+
+funções:
+
+- Coletar informações do banco de dados.
+
+- Inserir informações ao banco de dados.
