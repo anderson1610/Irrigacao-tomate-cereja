@@ -21,6 +21,8 @@ def get_username():
 
 #Cria o arquivo .txt para salvar as informações do servidor (log)
 def create_log_file():
+    data_atual = datetime.now() # Obtém a data atual
+    data_string = data_atual.strftime('%d%m%Y') # Formata a data no padrão brasileiro (dd/mm/aaaa)
     name_user = get_username()
     log_file = f"C:\\Users\\{name_user}\\Desktop\\LogSERVIDOR\\{data_string}_Servidor_LOG.txt"
     path = Path(f"C:\\Users\\{name_user}\\Desktop\\LogSERVIDOR")
