@@ -126,6 +126,9 @@ def get_username():
 
 #Cria o arquivo .csv para salvar as informações do banco previsao
 def create_log_file():
+    data_atual = datetime.now() # Obtém a data atual
+    data_string = data_atual.strftime('%d%m%Y') # Formata a data no padrão brasileiro (dd/mm/aaaa)
+    data_formatada = int(data_string) # converte em INT
     hours_current = hours()
     name_user = get_username()
     log_file = f"C:\\Users\\{name_user}\\Desktop\\Backup\\{data_string}_Dados_Banco_Previsao_{hours_current}.csv"
@@ -155,6 +158,10 @@ def backup():
 
 #Coleta os dados da API e envia ao banco de dados
 def collect_data():
+
+    data_atual = datetime.now() # Obtém a data atual
+    data_string = data_atual.strftime('%d%m%Y') # Formata a data no padrão brasileiro (dd/mm/aaaa)
+    data_formatada = int(data_string) # converte em INT
     response = requests.get(weather_url)
     data = response.json()
     
@@ -217,6 +224,8 @@ def send_email_water(file_path, consumption):
 
 #Cria o arquivo .csv para salvar as informações do banco de gasto de agua
 def create_log_file_water():
+    data_atual = datetime.now() # Obtém a data atual
+    data_string = data_atual.strftime('%d%m%Y') # Formata a data no padrão brasileiro (dd/mm/aaaa)
     name_user = get_username()
     log_file = f"C:\\Users\\{name_user}\\Desktop\\ConsumoAgua\\{data_string}_ConsumoAgua.csv"
     path = Path(f"C:\\Users\\{name_user}\\Desktop\\ConsumoAgua")
@@ -269,11 +278,11 @@ def calculate_send():
 #Função que realiza o agendamento das tarefas do servidor
 def interface():
 
-    #Agendar o envio do calculo da matriz de markov ao banco a cada 24 horas
-    schedule.every(24).hours.do(markov.inserir_markov)
+    #Agendar o envio do calculo da matriz de markov ao banco a cada 9 horas
+    schedule.every(9).hours.do(markov.inserir_markov)
 
-    #Agendar o envio de consumo de agua a cada 24 horas
-    schedule.every(24).hours.do(calculate_send)
+    #Agendar o envio de consumo de agua a cada 10 horas
+    schedule.every(10).hours.do(calculate_send)
 
     # Agendar a coleta de dados da API a cada 10 minutos e envia ao banco de dados
     schedule.every(10).minutes.do(collect_data)
