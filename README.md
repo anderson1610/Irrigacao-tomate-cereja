@@ -2,25 +2,27 @@
  
 Componentes utilizados até o momento:
 
-NodeMCU ESP8266
+- NodeMCU ESP8266
 
-Sensor de temperatura
+- Sensor de temperatura
 
-Sensor de umidade de solo com sinal analogico
+- Sensor de umidade de solo com sinal analogico
  
-Sensor de umidade de solo com sinal digital
+- Sensor de umidade de solo com sinal digital
  
-Sensor de fluxo de agua 
+- Sensor de fluxo de agua 
 
-Sensor tipo boia 
+- Sensor tipo boia 
 
-Sensor de temperatura 
+- Sensor de temperatura 
 
-2 Mini Bomba d'água 
+- 2 Mini Bomba d'água 
 
-Solenoide 12V
+- Solenoide 12V
 
-Fonte com saída 12V 20A chaveada
+- Fonte com saída 12V 20A chaveada
+
+- Protoboard 400 pontos
 
 Testando os sensores:
 
