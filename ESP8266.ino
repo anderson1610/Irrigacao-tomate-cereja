@@ -6,11 +6,18 @@
 #include <TimeLib.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
+#include <BlynkSimpleEsp8266.h>
+//Credenciais para acessar o APP BlynkIOT
+#define BLYNK_TEMPLATE_ID ""
+#define BLYNK_TEMPLATE_NAME "TomateCereja"
+#define BLYNK_AUTH_TOKEN ""
+#define BLYNK_PRINT Serial 
 
 #define SENSOR_UMIDADE_DE_SOLO A0 //Sensor umidade de solo que recebe sinal analogico
 #define SENSOR_UMIDADE_DE_SOLO2 D0 //Sensor umidade de solo que recebe sinal digital
 #define DHTPIN D3      
-#define DHTTYPE DHT11   
+#define DHTTYPE DHT11
+
 DHT dht(DHTPIN, DHTTYPE);
 
 // Defina o nome da sua rede Wi-Fi e a senha
@@ -26,7 +33,6 @@ WiFiClient wifiClient; // Criar um objeto WiFiClient
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
-
 
 const int boiaPin = D2; // Pino onde a boia está conectada
 int bomba1 = D5; // Pino onde a mini bomba d'agua esta conectada
@@ -62,7 +68,6 @@ const unsigned long intervalObterMarkov = 300000; // Intervalo para obter dados 
 const unsigned long intervalInfoOpenweathermap = 600000; // Intervalo para obter dados de OpenWeatherMap (10 minutos)
 const unsigned long intervalAddCustoAgua =  300000;// Intervalo para adicionar dados de custo de água (5 minutos)
 
-
 void setup() {
 
   // Inicialize a comunicação serial
@@ -84,6 +89,10 @@ void setup() {
     delay(1000);
     Serial.println("Conectando ao WiFi...");
   }
+
+  // Conecte-se ao Blynk
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, password, "blynk.cloud", 80);
+
   Serial.println("Conectado ao WiFi");
   digitalWrite(LED_BUILTIN, HIGH);
   timeClient.begin();
@@ -102,6 +111,8 @@ void loop() {
     verificarSoloSeco();
     verificarSoloUmidoMAIS();
     verificarSensorSolo2();
+    Blynk.run();
+
   }
 
   // Verificar a temperatura
@@ -210,8 +221,14 @@ void obter_Markov(){
     // Agora você pode usar as variáveis mes e probabilidade conforme necessário
     Serial.print("Mês da coleta Markov: ");
     Serial.println(mes);
-    Serial.print("Probabilidade Markov: ");
+    Serial.print("Markov: ");
     Serial.println(probabilidade);
+
+    String markov = "Markov " + mes + ":";
+    Blynk.virtualWrite(V6, markov); // Pino Virtual 6 para texto
+    Blynk.virtualWrite(V5, probabilidade); // Pino Virtual 0 para a temperatura DHT 11
+
+
   } else {
     Serial.print("Erro na solicitação HTTP. Código de resposta: ");
     Serial.println(httpResponseCode);
@@ -280,6 +297,9 @@ void medirFluxoAgua(){
   volume = (pulse * 4.5) / 1000.0;
   Serial.print( volume);
   Serial.println(" L/min");
+  String consumo = " Consumo de Água ";
+  Blynk.virtualWrite(V9, consumo); // Pino Virtual 9 para texto
+  Blynk.virtualWrite(V8, volume); // Pino Virtual 8 para o consumo de agua
 }
 
 ICACHE_RAM_ATTR void increase() {
@@ -320,17 +340,25 @@ void verificarTemperatura(){
     Serial.print(umidade);
     Serial.println(" %");
 
+    String casa = "Temperatura casa: ";
+    Blynk.virtualWrite(V3, casa); // Pino Virtual 3 para texto
+    Blynk.virtualWrite(V0, temperatura); // Pino Virtual 0 para a temperatura DHT 11
+    
+
+
     //desenvolvimento e produção do tomate
     if (temperatura >= 10 && temperatura <= 34 ) {
-      Serial.print("| Temperatura do local esta ideal para desenvolvimento e produção do tomate");
+      Serial.print("| Temperatura do local esta ideal para desenvolvimento e produção do tomate ");
       
       if (temperatura_api >= 10 && temperatura_api <= 34){
-        Serial.print("| Temperatura de São Paulo esta ideal para desenvolvimento e produção do tomate");
+        Serial.print("| Temperatura de São Paulo esta ideal para desenvolvimento e produção do tomate ");
+        String SaoPaulo = "São Paulo: ";
+        Blynk.virtualWrite(V4, SaoPaulo); // Pino Virtual 4 para texto
+        Blynk.virtualWrite(V1, temperatura_api); // Pino Virtual 1 para temperatura de são paulo
       }
 
     } else {
-      Serial.print("| Temperatura local fora das recomendadas para desenvolvimento e produção do tomate");
-    //Add ação
+      Serial.print("| Temperatura local fora das recomendadas para desenvolvimento e produção do tomate ");
     }
 
   }
@@ -354,6 +382,7 @@ void verificarUmidadeSolo(){
   Serial.print("Umidade do solo: ");
   Serial.print(umidadeSolo);
   Serial.println("%");
+  Blynk.virtualWrite(V2, umidadeSolo); // Pino Virtual 2 para umidade de  solo
 
   if (umidadeSolo < umidade_solo_maxima && umidadeSolo >= umidade_solo_ideal ){
       digitalWrite(bomba1, LOW); //Mantem apenas a bomba 1
