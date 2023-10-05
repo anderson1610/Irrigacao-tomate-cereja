@@ -2,6 +2,8 @@
  
 Componentes utilizados até o momento:
 
+NodeMCU ESP8266
+
 Sensor de temperatura
 
 Sensor de umidade de solo com sinal analogico
