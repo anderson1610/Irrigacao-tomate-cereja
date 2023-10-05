@@ -20,7 +20,7 @@ Solenoide 12V
 
 Fonte com saída 12V 20A chaveada
 
-Foto testando os sensores:
+Testando os sensores:
 
 
 ![20231004_105241.jpg](https://github.com/anderson1610/Irrigacao-tomate-cereja/assets/74426791/2b29fcb9-ae13-4cda-b757-7a55c7468d10)
