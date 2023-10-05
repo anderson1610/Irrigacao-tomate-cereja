@@ -284,8 +284,8 @@ def interface():
     #Agendar o envio de consumo de agua a cada 10 horas
     schedule.every(10).hours.do(calculate_send)
 
-    # Agendar a coleta de dados da API a cada 10 minutos e envia ao banco de dados
-    schedule.every(10).minutes.do(collect_data)
+    # Agendar a coleta de dados da API a cada 3 minutos e envia ao banco de dados
+    schedule.every(3).minutes.do(collect_data)
 
     # Agendar a função backup() a cada 10 horas
     schedule.every(10).hours.do(backup)
