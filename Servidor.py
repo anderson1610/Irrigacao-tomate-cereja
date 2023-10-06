@@ -248,11 +248,11 @@ def create_log_file_water():
 def calculate_fare(consumo):
     consumoM3 = consumo / 1000
     if consumoM3 <= 10.33:
-        return consumoM3 * 2.5
+        return round(consumoM3 * 2.5, 2)
     elif consumoM3 <= 20:
-        return (10 * 2.5) + ((consumoM3 - 10) * 3)
+        return round((10 * 2.5) + ((consumoM3 - 10) * 3), 2)
     else:
-        return (10 * 2.5) + (10 * 3) + ((consumoM3 - 20) * 4)
+        return round((10 * 2.5) + (10 * 3) + ((consumoM3 - 20) * 4), 2)
 
 #Pega as informações do banco de consumo de agua, calcular o gasto de agua e enviar por e-mail
 def calculate_send():
