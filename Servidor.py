@@ -78,7 +78,7 @@ def send_email_backup(file_path):
     msg['To'] = email_client 
     msg['Subject'] = 'Arquivo CSV de Previsão'
 
-    body = "Segue anexo o arquivo CSV de previsão."
+    body = "Segue o anexo dp arquivo CSV de previsão do banco."
     msg.attach(MIMEText(body, 'plain'))
 
     with open(file_path, 'rb') as f:
