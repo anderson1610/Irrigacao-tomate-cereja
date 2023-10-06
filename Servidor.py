@@ -246,6 +246,7 @@ def create_log_file_water():
 
 # Função que calcula o gasto de agua de acordo com a tarifa sabesp
 def calculate_fare(consumo):
+    #ESP8266 envia o consumo em litros convertemos para metros cubicos, 1M3 equivale a 1000 litros.
     consumoM3 = consumo / 1000
     if consumoM3 <= 10.33:
         return round(consumoM3 * 2.5, 2)
