@@ -100,3 +100,18 @@ Funções:
 - Integração: Pode ser integrado a plataformas como o Arduino, tornando-o uma escolha popular para projetos de hardware DIY.
 
 Em resumo, o ESP8266 é uma ferramenta poderosa que permite a conexão de dispositivos e a criação de soluções de IoT de maneira econômica. Sua versatilidade e capacidade de comunicação sem fio tornam-no uma escolha popular para uma ampla gama de projetos, desde controle de dispositivos domésticos até coleta de dados e automação industrial.
+
+Interface aplicativo BlynkIOT: 
+![Interface 123](https://github.com/anderson1610/Irrigacao-tomate-cereja/assets/74426791/83cdf79f-8bc3-451f-b14f-eae77767f154)
+
+A aplicação é dividida em duas telas distintas, cada uma fornecendo informações valiosas e relevantes para a gestão eficaz do plantio do tomate cereja.
+
+- Tela 1: Informações de Ambiente
+Na primeira tela, o usuário é apresentado a informações críticas relacionadas ao ambiente de cultivo.
+Isso inclui a temperatura atual do local de plantio, a temperatura atual da cidade de São Paulo (um ponto de referência geográfico relevante) e dados sobre a umidade do solo, que desempenha um papel vital na agricultura.
+Essas informações servem como uma base fundamental para tomar decisões informadas sobre o cultivo e seu manejo.
+
+- Tela 2: Probabilidade de Chuva e Consumo de Água
+A segunda tela fornece informações sobre a probabilidade de chuva com base em um modelo de previsão avançado, implementado por meio do método de Markov.
+Além disso, apresenta o consumo de água em litros pelo cultivo, permitindo uma avaliação precisa dos recursos hídricos necessários.
+Um indicador visual é incorporado para sinalizar se o reservatório de água associado ao plantio está cheio ou requer recarga, na qual é feito de forma automatica por meio da solenoide implementada.
