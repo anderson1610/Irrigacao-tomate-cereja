@@ -206,7 +206,7 @@ def send_email_water(file_path, consumption):
     msg['To'] = email_client 
     msg['Subject'] = 'Arquivo CSV do fluxo/gasto de água'
 
-    body = f"Segue anexo o arquivo CSV de gasto de água. Consumo de: {consumption}"
+    body = f"Segue anexo do arquivo CSV de gasto de água. Consumo de: {consumption} R$"
     msg.attach(MIMEText(body, 'plain'))
 
     with open(file_path, 'rb') as f:
