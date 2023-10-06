@@ -246,12 +246,13 @@ def create_log_file_water():
 
 # Função que calcula o gasto de agua de acordo com a tarifa sabesp
 def calculate_fare(consumo):
-    if consumo <= 10.33:
-        return consumo * 2.5
-    elif consumo <= 20:
-        return (10 * 2.5) + ((consumo - 10) * 3)
+    consumoM3 = consumo / 1000
+    if consumoM3 <= 10.33:
+        return consumoM3 * 2.5
+    elif consumoM3 <= 20:
+        return (10 * 2.5) + ((consumoM3 - 10) * 3)
     else:
-        return (10 * 2.5) + (10 * 3) + ((consumo - 20) * 4)
+        return (10 * 2.5) + (10 * 3) + ((consumoM3 - 20) * 4)
 
 #Pega as informações do banco de consumo de agua, calcular o gasto de agua e enviar por e-mail
 def calculate_send():
