@@ -224,9 +224,12 @@ void obter_Markov(){
     Serial.print("Markov: ");
     Serial.println(probabilidade);
 
-    String markov = "Markov " + mes + ":";
+    String markov = mes + " chuvoso:";
     Blynk.virtualWrite(V6, markov); // Pino Virtual 6 para texto
-    Blynk.virtualWrite(V5, probabilidade); // Pino Virtual 0 para a temperatura DHT 11
+    int probabilidade_porcent = probabilidade * 100;
+    String probabilidade_string = String(probabilidade_porcent);
+    probabilidade_string = probabilidade_string + "%" + " viabilidade";
+    Blynk.virtualWrite(V5, probabilidade_string); // Pino Virtual 0 para a temperatura DHT 11
 
 
   } else {
@@ -342,7 +345,7 @@ void verificarTemperatura(){
     Serial.print(umidade);
     Serial.println(" %");
 
-    String casa = "Temperatura casa: ";
+    String casa = "Plantio ºC: ";
     Blynk.virtualWrite(V3, casa); // Pino Virtual 3 para texto
     Blynk.virtualWrite(V0, temperatura); // Pino Virtual 0 para a temperatura DHT 11
     
@@ -354,7 +357,7 @@ void verificarTemperatura(){
       
       if (temperatura_api >= 10 && temperatura_api <= 34){
         Serial.print("| Temperatura de São Paulo esta ideal para desenvolvimento e produção do tomate ");
-        String SaoPaulo = "São Paulo: ";
+        String SaoPaulo = "São Paulo ºC: ";
         Blynk.virtualWrite(V4, SaoPaulo); // Pino Virtual 4 para texto
         Blynk.virtualWrite(V1, temperatura_api); // Pino Virtual 1 para temperatura de são paulo
       }
