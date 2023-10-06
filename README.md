@@ -51,7 +51,7 @@ Servidor:
 
 Interface que relata o que está sendo feito pelo servidor e o horário que foi feito.
 
-Configurações da maquina virtual na qual o servidor esta sendo executado: 
+- Configurações da maquina virtual na qual o servidor esta sendo executado: 
 
 ![Configurações VM](https://github.com/anderson1610/Irrigacao-tomate-cereja/assets/74426791/f435282a-22a5-4fa3-8ca9-fec127695f5f)
 
