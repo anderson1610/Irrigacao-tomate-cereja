@@ -48,7 +48,7 @@ float temperatura_api; // Temperatura de São Paulo fornecida pela API openweath
 float umidade_api; // Umidade de São Paulo fornecida pela API openweathermap
 int umidade_solo_ideal = 500; //Valor da umidade em que o solo deve estar
 int umidade_solo_maxima = 700; //Valor maximo seco que a umidade possa chegar
-int umidade_solo_minima = 350; //Valor da umididade maxima umida que possa chegar o solo, para não prejudicar o plantio
+int umidade_solo_minima = 450; //Valor da umididade maxima umida que possa chegar o solo, para não prejudicar o plantio
 
 unsigned long previousMillisBoia = 0;
 unsigned long previousMillisTemperatura = 0;
@@ -112,6 +112,7 @@ void loop() {
     verificarSoloUmidoMAIS();
     verificarSensorSolo2();
     Blynk.run();
+    probabilidade_markov_umidadeAtual();
 
   }
 
@@ -146,6 +147,16 @@ void loop() {
   }
 }
 
+//Função que coleta a probabilidade mensal de markov + umidade atual do local + umidade atual de são paulo e nos retorna uma nova estimativa de pausa em segundos na irrigação
+void probabilidade_markov_umidadeAtual(){
+  float probabilidade_convertida = probabilidade * 1000;
+  float umidade = dht.readHumidity();
+  float umidade_geral = ((umidade_api + umidade) / 2) * 10;
+  pausa_probabilidade = 1000 + probabilidade_convertida + umidade_geral;
+  Serial.print("Tempo de pausa: ");
+  Serial.println(pausa_probabilidade);
+}
+
 //função onde é realizado a coleta de temperatura e umidade referente a cidade de São Paulo
 void info_openweathermap(){
 
@@ -172,7 +183,7 @@ void info_openweathermap(){
       temperatura_api = doc["temperatura"];
       umidade_api = doc["umidade"];
       Serial.print("Temperatura de São Paulo: ");
-      Serial.print(temperatura_api);
+      Serial.println(temperatura_api);
       Serial.print(" Umidade de São Paulo: ");
       Serial.println(umidade_api);
     } else {
