@@ -310,6 +310,8 @@ void medirFluxoAgua(){
 
   volume = (pulse * 4.5) / 1000.0;
   Serial.print( volume);
+  String consumo = " Consumo de Água";
+  Blynk.virtualWrite(V9, consumo); // Pino Virtual 9 para texto
   Serial.println(" L/min");
   Blynk.virtualWrite(V8, volume); // Pino Virtual 8 para o consumo de agua
 }
