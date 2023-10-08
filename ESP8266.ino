@@ -375,7 +375,7 @@ void verificarTemperatura(){
 
     } else {
       Serial.print("| Temperatura local fora das recomendadas para desenvolvimento e produção do tomate ");
-      Blynk.logEvent("temperaturawarning", "Temperatura do plantio fora dos paramentros recomendados!");
+      Blynk.logEvent("temperaturawarning", "Temperatura do plantio fora dos parâmetros recomendados!");
     }
 
   }
