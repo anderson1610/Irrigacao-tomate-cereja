@@ -46,9 +46,9 @@ String mes;  //Mês da probabilidade adquirida por Markov
 float probabilidade; //Probabilidade do Mes atual por Markov
 float temperatura_api; // Temperatura de São Paulo fornecida pela API openweathermap
 float umidade_api; // Umidade de São Paulo fornecida pela API openweathermap
-int umidade_solo_ideal = 310; //Valor da umidade em que o solo deve estar
+int umidade_solo_ideal = 330; //Valor da umidade em que o solo deve estar
 int umidade_solo_maxima = 500; //Valor maximo seco que a umidade possa chegar
-int umidade_solo_minima = 250; //Valor da umididade maxima umida que possa chegar o solo, para não prejudicar o plantio
+int umidade_solo_minima = 300; //Valor da umididade maxima umida que possa chegar o solo, para não prejudicar o plantio
 
 unsigned long previousMillisBoia = 0;
 unsigned long previousMillisTemperatura = 0;
@@ -384,7 +384,6 @@ void verificarTemperatura(){
 
 //Função que coleta as informações do sensor de umidade de solo
 void verificarUmidadeSolo(){
-
   int valorAnalogico = analogRead(SENSOR_UMIDADE_DE_SOLO);
   float umidadeSolo = valorAnalogico;
 
@@ -393,7 +392,7 @@ void verificarUmidadeSolo(){
   if (valorDigital){
     Serial.print("Solo seco ");
   } else{
-    Serial.print("Solo umido ideal");
+    Serial.print("Solo umido ");
   }
 
   Serial.print("Umidade do solo: ");
@@ -401,11 +400,15 @@ void verificarUmidadeSolo(){
   Serial.println("%");
   Blynk.virtualWrite(V2, umidadeSolo); // Pino Virtual 2 para umidade de  solo
 
-  if (umidadeSolo < umidade_solo_maxima && umidadeSolo >= umidade_solo_ideal ){
+  if (umidadeSolo < umidade_solo_maxima && umidadeSolo > umidade_solo_minima ){
       digitalWrite(bomba1, LOW); //Mantem apenas a bomba 1
-      digitalWrite(bomba2, HIGH); //Desliga a bomba 2
       Serial.print("Solo na umidade ideal, bomba 1 ligada");
-      digitalWrite(bomba1, HIGH);
+      delay(1000); 
+      digitalWrite(bomba1, HIGH); //Desliga a bomba 1
+
+  } else{
+    verificarSoloUmidoMAIS();
+    verificarSoloSeco();
   }
 }
 
@@ -454,5 +457,7 @@ void verificarSensorSolo2(){
   if (valorDigital){
     Serial.print("Localização do sensor de umidade de solo 2 está seco | Ligando bomba 2 ");
     digitalWrite(bomba2, LOW);  //Liga a bomba 2
-  } 
+  } else {
+    digitalWrite(bomba2, HIGH);  //desliga a bomba 2
+  }
 }
