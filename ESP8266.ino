@@ -403,7 +403,7 @@ void verificarUmidadeSolo(){
   if (umidadeSolo < umidade_solo_maxima && umidadeSolo > umidade_solo_minima ){
       digitalWrite(bomba1, LOW); //Mantem apenas a bomba 1
       Serial.print("Solo na umidade ideal, bomba 1 ligada");
-      delay(1000); 
+      delay(500); 
       digitalWrite(bomba1, HIGH); //Desliga a bomba 1
 
   } else{
