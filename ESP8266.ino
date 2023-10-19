@@ -46,9 +46,9 @@ String mes;  //Mês da probabilidade adquirida por Markov
 float probabilidade; //Probabilidade do Mes atual por Markov
 float temperatura_api; // Temperatura de São Paulo fornecida pela API openweathermap
 float umidade_api; // Umidade de São Paulo fornecida pela API openweathermap
-int umidade_solo_ideal = 330; //Valor da umidade em que o solo deve estar
-int umidade_solo_maxima = 500; //Valor maximo seco que a umidade possa chegar
-int umidade_solo_minima = 300; //Valor da umididade maxima umida que possa chegar o solo, para não prejudicar o plantio
+int umidade_solo_ideal = 410; //Valor da umidade em que o solo deve estar
+int umidade_solo_maxima = 510; //Valor maximo seco que a umidade possa chegar
+int umidade_solo_minima = 370; //Valor da umididade maxima umida que possa chegar o solo, para não prejudicar o plantio
 
 unsigned long previousMillisBoia = 0;
 unsigned long previousMillisTemperatura = 0;
