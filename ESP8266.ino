@@ -17,6 +17,7 @@
 #define SENSOR_UMIDADE_DE_SOLO2 D0 //Sensor umidade de solo que recebe sinal digital
 #define DHTPIN D3      
 #define DHTTYPE DHT11
+#define LED_1   D4
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -73,6 +74,7 @@ void setup() {
   // Inicialize a comunicação serial
   Serial.begin(115200);
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED_1, OUTPUT);
   pinMode(boiaPin, INPUT); //define o pino do sensor como entrada 
   dht.begin();
   pinMode(bomba1, OUTPUT);
@@ -103,6 +105,7 @@ void setup() {
 
 void loop() {
   unsigned long currentMillis = millis();
+  
 
   // Verificar a boia e outras funções constantes
   if (currentMillis - previousMillisBoia >= intervalBoia) {
@@ -112,6 +115,7 @@ void loop() {
     verificarSoloUmidoMAIS();
     verificarSensorSolo2();
     Blynk.run();
+    digitalWrite(LED_1, HIGH);
 
   }
 
@@ -119,6 +123,7 @@ void loop() {
   if (currentMillis - previousMillisTemperatura >= intervalTemperatura) {
     previousMillisTemperatura = currentMillis;
     verificarTemperatura();
+    digitalWrite(LED_1, HIGH);
   }
 
   // Verificar a umidade do solo
@@ -126,24 +131,28 @@ void loop() {
     previousMillisUmidadeSolo = currentMillis;
     verificarUmidadeSolo();
     probabilidade_markov_umidadeAtual();
+    digitalWrite(LED_1, HIGH);
   }
 
   // Obter dados de Markov
   if (currentMillis - previousMillisObterMarkov >= intervalObterMarkov) {
     previousMillisObterMarkov = currentMillis;
     obter_Markov();
+    digitalWrite(LED_1, HIGH);
   }
 
   // Obter dados de OpenWeatherMap
   if (currentMillis - previousMillisInfoOpenweathermap >= intervalInfoOpenweathermap) {
     previousMillisInfoOpenweathermap = currentMillis;
     info_openweathermap();
+    digitalWrite(LED_1, LOW);
   }
 
   // Adicionar dados de custo de água
   if (currentMillis - previousMillisAddCustoAgua >= intervalAddCustoAgua) {
     previousMillisAddCustoAgua = currentMillis;
     add_custoAgua();
+    digitalWrite(LED_1, LOW);
   }
 }
 
