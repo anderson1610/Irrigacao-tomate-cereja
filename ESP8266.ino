@@ -17,7 +17,7 @@
 #define SENSOR_UMIDADE_DE_SOLO2 D0 //Sensor umidade de solo que recebe sinal digital
 #define DHTPIN D3      
 #define DHTTYPE DHT11
-#define LED_1   D4
+#define LED_1   D4 //Led de sinalização que o programa esta sendo executado
 
 DHT dht(DHTPIN, DHTTYPE);
 
