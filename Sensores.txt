@@ -4,6 +4,7 @@ D1 - Sensor de fluxo de agua
 D2 - Sensor tipo boia
 D3 - Sensor de temperatura
 D4 - Led sinalizador verde (Sinal Positivo)
+D8 - Led sinalizador vermelho (Sinal Negativo)
 D5 - Bomba 1
 D6 - Bomba 2
 D7 - Solenoide
