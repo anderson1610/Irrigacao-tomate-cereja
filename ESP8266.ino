@@ -18,6 +18,7 @@
 #define DHTPIN D3      
 #define DHTTYPE DHT11
 #define LED_1   D4 //Led de sinalização que o programa esta sendo executado
+#define LED_2   D8 //Led de sinalização de algo negativo
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -75,6 +76,7 @@ void setup() {
   Serial.begin(115200);
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(LED_1, OUTPUT);
+  pinMode(LED_2, OUTPUT);
   pinMode(boiaPin, INPUT); //define o pino do sensor como entrada 
   dht.begin();
   pinMode(bomba1, OUTPUT);
@@ -116,7 +118,6 @@ void loop() {
     verificarSensorSolo2();
     Blynk.run();
     digitalWrite(LED_1, HIGH);
-
   }
 
   // Verificar a temperatura
@@ -356,6 +357,7 @@ void verificarTemperatura(){
 
   if (isnan(temperatura) || isnan(umidade)) {
     Serial.println("Falha ao ler o sensor DHT11!");
+    digitalWrite(LED_2, HIGH);
   } else {
     Serial.print("Temperatura local: ");
     Serial.print(temperatura);
@@ -385,6 +387,7 @@ void verificarTemperatura(){
     } else {
       Serial.print("| Temperatura local fora das recomendadas para desenvolvimento e produção do tomate ");
       Blynk.logEvent("temperaturawarning", "Temperatura do plantio fora dos parâmetros recomendados!");
+      digitalWrite(LED_2, HIGH);
     }
 
   }
