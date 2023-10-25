@@ -119,3 +119,18 @@ Essas informações servem como uma base fundamental para tomar decisões inform
 A segunda tela fornece informações sobre a probabilidade de chuva com base em um modelo de previsão avançado, implementado por meio do método de Markov.
 Além disso, apresenta o consumo de água em litros pelo cultivo, permitindo uma avaliação precisa dos recursos hídricos necessários.
 Um indicador visual é incorporado para sinalizar se o reservatório de água associado ao plantio está cheio ou requer recarga, na qual é feito de forma automatica por meio da solenoide implementada.
+
+Necessários:
+A fim de configurar o servidor.py conforme programado previamente, alguns procedimentos são necessários para sua implantação em seu ambiente. 
+
+Primeiramente, é preciso efetuar o registro no site da API, que utilizamos para coletar os dados de previsão do tempo da cidade que estamos monitorando, São Paulo. O website em questão é o seguinte: https://openweathermap.org/api. Após a conclusão do processo de registro e login, o OpenWeatherMap fornecerá uma chave de acesso, a qual deve ser inserida na linha 19, na variável denominada "api_key".
+
+O próximo passo envolve a criação de um banco de dados para armazenamento das informações coletadas. Para esta finalidade, recomendamos a utilização do serviço DB4free, uma opção gratuita que já está disponível na web. Dado que nosso projeto é um protótipo, este serviço se mostrou especialmente adequado. O link para acessar o DB4free é o seguinte: https://www.db4free.net/phpMyAdmin/index.php?route=/&route=%2F&db=tccarduino2023&table=previsao. 
+
+A fim de manter a consistência com o nosso código e evitar modificações desnecessárias, sugerimos criar um banco de dados com o nome "tccarduino2023" e uma tabela chamada "previsao" para armazenar os dados da OpenWeatherMap, "Markov2023" onde será armazenado o calculo da probabilidade de chuva e "CustoAgua" onde serão armazenados através do ESP8266 o consumo de agua coletado pelo sensor de fluxo de agua. Após essa etapa, você só precisará ajustar a variável "conn", presente na linha 29. Caso opte por utilizar o DB4free, será necessário adicionar suas credenciais de login, como nome de usuário e senha do banco.
+
+Para permitir que o servidor envie relatórios por e-mail, é necessário criar uma chave (senha) na configuração de sua conta Gmail, desde que você também utilize esse serviço de e-mail, a fim de permitir o acesso do servidor à sua conta e possibilitar o envio de mensagens para o destinatário desejado. Após essa configuração, você deverá adicionar essa chave e os dados do e-mail do destinatário nas linhas 24 a 26.
+
+Com essas informações você conseguira rodar a API_ESP8266.py, substituindo essas informações coletadas na variavel db_config, contida na linha 14 do API_ESP8266.py.
+
+Após essas configurações basta ir no arquivo main.py e executa-lo, para iniciar o servidor junto com sua interface grafica.
