@@ -38,6 +38,8 @@ Componentes utilizados:
 
 - Resistores 220 ohm
 
+- Mangueira de aquário
+
 Testando os sensores:
 
 
