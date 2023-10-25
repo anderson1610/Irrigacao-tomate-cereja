@@ -1,6 +1,6 @@
 # TCC UNIP 2023
  
-Componentes utilizados até o momento:
+Componentes utilizados:
 
 - NodeMCU ESP8266
 
@@ -22,7 +22,9 @@ Componentes utilizados até o momento:
 
 - Fonte com saída 12V 20A chaveada
 
-- Protoboard 400 pontos
+- 2 Protoboards 400 pontos
+
+- Caixa
 
 Testando os sensores:
 
