@@ -24,6 +24,8 @@ Componentes utilizados:
 
 - 2 Protoboards 400 pontos
 
+- Diodos de Led
+
 - Caixa
 
 Testando os sensores:
