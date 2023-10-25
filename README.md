@@ -18,7 +18,7 @@ Componentes utilizados:
 
 - 2 Mini Bomba d'água 
 
-- Solenoide 12V
+- Solenoide NF 12V
 
 - Fonte com saída 12V 20A chaveada
 
