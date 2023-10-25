@@ -1,4 +1,4 @@
-# TCC UNIP 2023 - em andamento 
+# TCC UNIP 2023
  
 Componentes utilizados até o momento:
 
