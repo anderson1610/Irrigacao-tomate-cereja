@@ -120,6 +120,10 @@ A segunda tela fornece informações sobre a probabilidade de chuva com base em 
 Além disso, apresenta o consumo de água em litros pelo cultivo, permitindo uma avaliação precisa dos recursos hídricos necessários.
 Um indicador visual é incorporado para sinalizar se o reservatório de água associado ao plantio está cheio ou requer recarga, na qual é feito de forma automatica por meio da solenoide implementada.
 
+Protótipo finalizado: 
+
+![IMG-20231021-WA0057.jpg](https://github.com/anderson1610/Irrigacao-tomate-cereja/assets/74426791/8aafe222-30de-4eca-9cb2-d322b0817df5)
+
 Como inciar o Servidor.py e API_ESP8266.py:
 
 A fim de configurar o servidor.py conforme programado previamente, alguns procedimentos são necessários para sua implantação em seu ambiente. 
