@@ -28,6 +28,16 @@ Componentes utilizados:
 
 - Caixa
 
+- 4 metros de mangueira 
+
+- Kit engate rápido
+
+- Mangueira para gotejamento com ponta de gotejador
+
+- Cabos
+
+- Resistores 220 ohm
+
 Testando os sensores:
 
 
@@ -127,6 +137,8 @@ Um indicador visual é incorporado para sinalizar se o reservatório de água as
 Protótipo finalizado: 
 
 ![IMG-20231021-WA0057.jpg](https://github.com/anderson1610/Irrigacao-tomate-cereja/assets/74426791/8aafe222-30de-4eca-9cb2-d322b0817df5)
+
+![20231022_100749.jpg](https://github.com/anderson1610/Irrigacao-tomate-cereja/assets/74426791/51236698-46fc-436f-bfa7-391232792b8b)
 
 Como inciar o Servidor.py e API_ESP8266.py:
 
