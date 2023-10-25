@@ -120,7 +120,8 @@ A segunda tela fornece informações sobre a probabilidade de chuva com base em 
 Além disso, apresenta o consumo de água em litros pelo cultivo, permitindo uma avaliação precisa dos recursos hídricos necessários.
 Um indicador visual é incorporado para sinalizar se o reservatório de água associado ao plantio está cheio ou requer recarga, na qual é feito de forma automatica por meio da solenoide implementada.
 
-Necessários:
+Como inciar o Servidor.py e API_ESP8266.py:
+
 A fim de configurar o servidor.py conforme programado previamente, alguns procedimentos são necessários para sua implantação em seu ambiente. 
 
 Primeiramente, é preciso efetuar o registro no site da API, que utilizamos para coletar os dados de previsão do tempo da cidade que estamos monitorando, São Paulo. O website em questão é o seguinte: https://openweathermap.org/api. Após a conclusão do processo de registro e login, o OpenWeatherMap fornecerá uma chave de acesso, a qual deve ser inserida na linha 19, na variável denominada "api_key".
